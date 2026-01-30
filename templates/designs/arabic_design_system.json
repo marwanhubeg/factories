@@ -1,0 +1,481 @@
+{
+  "design_system": {
+    "name": "نظام تصميم ماروان (Marwan Design System)",
+    "version": "3.0.0",
+    "language": "ar",
+    "direction": "rtl",
+    "created_date": "2024-03-15",
+    "last_updated": "2024-03-15",
+    "description": "نظام تصميم شامل للواجهات العربية مع التركيز على سهولة الاستخدام والتجربة الرقمية المتميزة"
+  },
+
+  "design_principles": {
+    "clarity": "الوضوح: كل عنصر يجب أن يكون واضحاً في وظيفته",
+    "consistency": "الاتساق: تجربة موحدة عبر جميع المنصات",
+    "accessibility": "سهولة الوصول: دعم ذوي الاحتياجات الخاصة",
+    "performance": "الأداء: تحميل سريع واستجابة فورية",
+    "aesthetics": "الجمالية: تصميم أنيق وجذاب"
+  },
+
+  "typography": {
+    "font_families": {
+      "primary": {
+        "name": "Cairo",
+        "weights": ["300", "400", "600", "700", "800"],
+        "source": "Google Fonts",
+        "usage": "النصوص الرئيسية والعناوين"
+      },
+      "secondary": {
+        "name": "Tajawal",
+        "weights": ["300", "400", "500", "700"],
+        "source": "Google Fonts",
+        "usage": "النصوص الطويلة والمحتوى"
+      },
+      "monospace": {
+        "name": "IBM Plex Sans Arabic",
+        "weights": ["400", "600"],
+        "source": "Google Fonts",
+        "usage": "الأكواد والعناوين التقنية"
+      }
+    },
+
+    "scale": {
+      "h1": {
+        "font_size": "3rem",
+        "line_height": "1.2",
+        "font_weight": "700",
+        "letter_spacing": "-0.02em",
+        "use_case": "العنوان الرئيسي"
+      },
+      "h2": {
+        "font_size": "2.5rem",
+        "line_height": "1.3",
+        "font_weight": "600",
+        "use_case": "العناوين الفرعية"
+      },
+      "h3": {
+        "font_size": "2rem",
+        "line_height": "1.4",
+        "font_weight": "600",
+        "use_case": "عناوين الأقسام"
+      },
+      "h4": {
+        "font_size": "1.5rem",
+        "line_height": "1.5",
+        "font_weight": "600",
+        "use_case": "عناوين الفقرات"
+      },
+      "body_large": {
+        "font_size": "1.125rem",
+        "line_height": "1.8",
+        "font_weight": "400",
+        "use_case": "النصوص الطويلة"
+      },
+      "body": {
+        "font_size": "1rem",
+        "line_height": "1.7",
+        "font_weight": "400",
+        "use_case": "النصوص العادية"
+      },
+      "small": {
+        "font_size": "0.875rem",
+        "line_height": "1.6",
+        "font_weight": "400",
+        "use_case": "التوضيحات والحواشي"
+      }
+    },
+
+    "paragraph_spacing": {
+      "after_heading": "1.5em",
+      "between_paragraphs": "1em",
+      "list_item_spacing": "0.5em"
+    }
+  },
+
+  "color_palette": {
+    "primary": {
+      "main": "#4a6fa5",
+      "light": "#6a8bc5",
+      "dark": "#2a4f85",
+      "contrast": "#ffffff"
+    },
+    "secondary": {
+      "main": "#166088",
+      "light": "#3680a8",
+      "dark": "#064068",
+      "contrast": "#ffffff"
+    },
+    "accent": {
+      "main": "#ff6b6b",
+      "light": "#ff8b8b",
+      "dark": "#ff4b4b",
+      "contrast": "#ffffff"
+    },
+    "success": {
+      "main": "#28a745",
+      "light": "#48c765",
+      "dark": "#088725",
+      "contrast": "#ffffff"
+    },
+    "warning": {
+      "main": "#ffc107",
+      "light": "#ffe137",
+      "dark": "#ffa000",
+      "contrast": "#000000"
+    },
+    "error": {
+      "main": "#dc3545",
+      "light": "#fc5565",
+      "dark": "#bc1525",
+      "contrast": "#ffffff"
+    },
+    "neutral": {
+      "white": "#ffffff",
+      "gray_50": "#f8f9fa",
+      "gray_100": "#e9ecef",
+      "gray_200": "#dee2e6",
+      "gray_300": "#ced4da",
+      "gray_400": "#adb5bd",
+      "gray_500": "#6c757d",
+      "gray_600": "#495057",
+      "gray_700": "#343a40",
+      "gray_800": "#212529",
+      "gray_900": "#121416",
+      "black": "#000000"
+    }
+  },
+
+  "spacing_scale": {
+    "base": "1rem",
+    "scale": [0, 0.25, 0.5, 0.75, 1, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10, 12, 14, 16],
+    "units": "rem",
+    "explanation": "جميع المسافات تعتمد على مضاعفات القاعدة (1rem = 16px)"
+  },
+
+  "border_radius": {
+    "none": "0",
+    "small": "0.25rem",
+    "medium": "0.5rem",
+    "large": "0.75rem",
+    "xlarge": "1rem",
+    "full": "9999px"
+  },
+
+  "shadows": {
+    "small": "0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)",
+    "medium": "0 3px 6px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.12)",
+    "large": "0 10px 20px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.10)",
+    "xlarge": "0 15px 25px rgba(0, 0, 0, 0.15), 0 5px 10px rgba(0, 0, 0, 0.05)",
+    "inner": "inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)"
+  },
+
+  "components": {
+    "buttons": {
+      "primary": {
+        "background": "var(--color-primary-main)",
+        "color": "var(--color-primary-contrast)",
+        "padding": "0.75rem 1.5rem",
+        "border_radius": "var(--border-radius-medium)",
+        "font_weight": "600",
+        "hover": {
+          "background": "var(--color-primary-dark)",
+          "transform": "translateY(-2px)",
+          "shadow": "var(--shadow-medium)"
+        },
+        "active": {
+          "transform": "translateY(0)",
+          "shadow": "var(--shadow-small)"
+        }
+      },
+      "secondary": {
+        "background": "transparent",
+        "color": "var(--color-primary-main)",
+        "border": "2px solid var(--color-primary-main)",
+        "padding": "0.75rem 1.5rem",
+        "border_radius": "var(--border-radius-medium)",
+        "font_weight": "600"
+      },
+      "sizes": {
+        "small": {
+          "padding": "0.5rem 1rem",
+          "font_size": "0.875rem"
+        },
+        "medium": {
+          "padding": "0.75rem 1.5rem",
+          "font_size": "1rem"
+        },
+        "large": {
+          "padding": "1rem 2rem",
+          "font_size": "1.125rem"
+        }
+      }
+    },
+
+    "cards": {
+      "default": {
+        "background": "var(--color-neutral-white)",
+        "border_radius": "var(--border-radius-medium)",
+        "padding": "var(--spacing-4)",
+        "shadow": "var(--shadow-medium)",
+        "border": "1px solid var(--color-neutral-200)"
+      },
+      "hover": {
+        "transform": "translateY(-4px)",
+        "shadow": "var(--shadow-large)",
+        "transition": "all 0.3s ease"
+      }
+    },
+
+    "forms": {
+      "input": {
+        "padding": "0.75rem 1rem",
+        "border": "1px solid var(--color-neutral-300)",
+        "border_radius": "var(--border-radius-medium)",
+        "font_size": "1rem",
+        "focus": {
+          "border_color": "var(--color-primary-main)",
+          "shadow": "0 0 0 3px rgba(74, 111, 165, 0.1)",
+          "outline": "none"
+        },
+        "error": {
+          "border_color": "var(--color-error-main)",
+          "background": "rgba(220, 53, 69, 0.05)"
+        },
+        "success": {
+          "border_color": "var(--color-success-main)",
+          "background": "rgba(40, 167, 69, 0.05)"
+        }
+      },
+      "label": {
+        "font_weight": "600",
+        "margin_bottom": "0.5rem",
+        "display": "block"
+      },
+      "help_text": {
+        "font_size": "0.875rem",
+        "color": "var(--color-neutral-600)",
+        "margin_top": "0.25rem"
+      }
+    },
+
+    "navigation": {
+      "navbar": {
+        "height": "4rem",
+        "background": "var(--color-neutral-white)",
+        "shadow": "var(--shadow-small)",
+        "padding_x": "var(--spacing-6)"
+      },
+      "nav_item": {
+        "padding": "var(--spacing-3) var(--spacing-4)",
+        "font_weight": "600",
+        "active": {
+          "color": "var(--color-primary-main)",
+          "border_bottom": "2px solid var(--color-primary-main)"
+        }
+      }
+    }
+  },
+
+  "layout": {
+    "breakpoints": {
+      "xs": "320px",
+      "sm": "576px",
+      "md": "768px",
+      "lg": "992px",
+      "xl": "1200px",
+      "xxl": "1400px"
+    },
+    "container_widths": {
+      "sm": "540px",
+      "md": "720px",
+      "lg": "960px",
+      "xl": "1140px",
+      "xxl": "1320px"
+    },
+    "grid": {
+      "columns": 12,
+      "gutter": "1.5rem",
+      "row_gap": "1rem"
+    }
+  },
+
+  "animations": {
+    "durations": {
+      "fast": "150ms",
+      "normal": "300ms",
+      "slow": "500ms"
+    },
+    "timing_functions": {
+      "ease": "cubic-bezier(0.25, 0.1, 0.25, 1)",
+      "ease_in": "cubic-bezier(0.42, 0, 1, 1)",
+      "ease_out": "cubic-bezier(0, 0, 0.58, 1)",
+      "ease_in_out": "cubic-bezier(0.42, 0, 0.58, 1)"
+    },
+    "transitions": {
+      "default": "all 0.3s var(--timing-ease)",
+      "fade": "opacity 0.3s var(--timing-ease)",
+      "slide": "transform 0.3s var(--timing-ease)"
+    }
+  },
+
+  "accessibility": {
+    "focus_styles": {
+      "outline": "2px solid var(--color-primary-main)",
+      "outline_offset": "2px"
+    },
+    "contrast_ratios": {
+      "normal_text": "4.5:1",
+      "large_text": "3:1",
+      "ui_components": "3:1"
+    },
+    "screen_reader": {
+      "only": {
+        "position": "absolute",
+        "width": "1px",
+        "height": "1px",
+        "padding": "0",
+        "margin": "-1px",
+        "overflow": "hidden",
+        "clip": "rect(0, 0, 0, 0)",
+        "white_space": "nowrap",
+        "border": "0"
+      }
+    }
+  },
+
+  "icons": {
+    "library": "Font Awesome 6",
+    "size_scale": {
+      "xs": "0.75rem",
+      "sm": "1rem",
+      "md": "1.25rem",
+      "lg": "1.5rem",
+      "xl": "2rem"
+    },
+    "color_inherit": true
+  },
+
+  "tokens": {
+    "css_variables": true,
+    "naming_convention": "kebab-case",
+    "prefix": "mds-",
+    "export_formats": ["css", "scss", "json", "js"]
+  },
+
+  "documentation": {
+    "storybook_url": "https://design.marwan-hub.com",
+    "figma_file": "https://www.figma.com/file/marwan-design-system",
+    "github_repo": "https://github.com/marwan-hub/design-system",
+    "contribution_guide": "https://design.marwan-hub.com/contribute"
+  },
+
+  "implementation_examples": {
+    "css_variables": `:root {
+  /* Colors */
+  --mds-color-primary-main: #4a6fa5;
+  --mds-color-primary-light: #6a8bc5;
+  --mds-color-primary-dark: #2a4f85;
+  
+  /* Typography */
+  --mds-font-primary: 'Cairo', sans-serif;
+  --mds-font-secondary: 'Tajawal', sans-serif;
+  
+  /* Spacing */
+  --mds-spacing-1: 0.25rem;
+  --mds-spacing-2: 0.5rem;
+  --mds-spacing-3: 0.75rem;
+  --mds-spacing-4: 1rem;
+  
+  /* Border Radius */
+  --mds-border-radius-small: 0.25rem;
+  --mds-border-radius-medium: 0.5rem;
+  --mds-border-radius-large: 0.75rem;
+}`,
+
+    "react_component": `import React from 'react';
+import './Button.css';
+
+export const Button = ({ 
+  children, 
+  variant = 'primary',
+  size = 'medium',
+  ...props 
+}) => {
+  return (
+    <button
+      className={\`mds-button mds-button--\${variant} mds-button--\${size}\`}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};`,
+
+    "tailwind_config": `module.exports = {
+  theme: {
+    extend: {
+      fontFamily: {
+        'primary': ['Cairo', 'sans-serif'],
+        'secondary': ['Tajawal', 'sans-serif'],
+      },
+      colors: {
+        'primary': {
+          main: '#4a6fa5',
+          light: '#6a8bc5',
+          dark: '#2a4f85',
+        },
+      },
+      spacing: {
+        '1': '0.25rem',
+        '2': '0.5rem',
+        '3': '0.75rem',
+        '4': '1rem',
+      },
+    },
+  },
+};`
+  },
+
+  "quality_standards": {
+    "performance": {
+      "first_contentful_paint": "< 1.5s",
+      "largest_contentful_paint": "< 2.5s",
+      "cumulative_layout_shift": "< 0.1",
+      "first_input_delay": "< 100ms"
+    },
+    "accessibility": {
+      "wcag_level": "AA",
+      "keyboard_navigation": true,
+      "screen_reader_support": true,
+      "color_contrast": "4.5:1 minimum"
+    },
+    "browser_support": {
+      "chrome": "last 2 versions",
+      "firefox": "last 2 versions",
+      "safari": "last 2 versions",
+      "edge": "last 2 versions"
+    }
+  },
+
+  "changelog": [
+    {
+      "version": "3.0.0",
+      "date": "2024-03-15",
+      "changes": [
+        "إضافة نظام ألوان جديد",
+        "تحسين دعم اللغة العربية",
+        "إضافة مكونات جديدة",
+        "تحسين الأداء والسرعة"
+      ]
+    },
+    {
+      "version": "2.1.0",
+      "date": "2023-12-01",
+      "changes": [
+        "تحسين نظام الطباعة",
+        "إضافة أنماط جديدة للأزرار",
+        "تحسين التوثيق"
+      ]
+    }
+  ]
+}

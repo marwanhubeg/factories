@@ -1,0 +1,384 @@
+---
+# Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: marwan-hub
+  labels:
+    name: marwan-hub
+    app: marwan-hub-factories
+
+---
+# ConfigMap للتكوينات
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: marwan-hub-config
+  namespace: marwan-hub
+data:
+  config.toml: |
+    [system]
+    name = "Marwan Hub Factories"
+    version = "3.0.0"
+    environment = "production"
+    
+    [api]
+    host = "0.0.0.0"
+    port = 8080
+    enable_cors = true
+    enable_swagger = true
+    
+    [database]
+    type = "postgres"
+    url = "postgresql://marwan:${POSTGRES_PASSWORD}@marwan-hub-postgres:5432/marwan_hub"
+    
+    [cache]
+    type = "redis"
+    url = "redis://marwan-hub-redis:6379"
+    ttl = 3600
+    
+    [security]
+    jwt_secret = "${JWT_SECRET}"
+    enable_auth = true
+    
+    [mhos]
+    version = "v2.2"
+    auto_optimize = true
+    quality_threshold = 0.85
+
+---
+# Secret للبيانات الحساسة
+apiVersion: v1
+kind: Secret
+metadata:
+  name: marwan-hub-secrets
+  namespace: marwan-hub
+type: Opaque
+stringData:
+  POSTGRES_PASSWORD: "change_this_password"
+  JWT_SECRET: "change_this_jwt_secret"
+  REDIS_PASSWORD: "change_redis_password"
+
+---
+# ServiceAccount
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: marwan-hub-sa
+  namespace: marwan-hub
+
+---
+# Deployment للتطبيق الرئيسي
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: marwan-hub
+  namespace: marwan-hub
+  labels:
+    app: marwan-hub
+    version: v3.0.0
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: marwan-hub
+  template:
+    metadata:
+      labels:
+        app: marwan-hub
+        version: v3.0.0
+    spec:
+      serviceAccountName: marwan-hub-sa
+      containers:
+      - name: marwan-hub
+        image: marwanhub/factories:v3.0.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 8443
+          name: https
+        env:
+        - name: RUST_LOG
+          value: "info"
+        - name: ENVIRONMENT
+          value: "production"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: marwan-hub-secrets
+              key: POSTGRES_PASSWORD
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: marwan-hub-secrets
+              key: JWT_SECRET
+        volumeMounts:
+        - name: config-volume
+          mountPath: /data/marwan-hub/config.toml
+          subPath: config.toml
+        - name: data-volume
+          mountPath: /data/marwan-hub/data
+        - name: logs-volume
+          mountPath: /data/marwan-hub/logs
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /api/v1/system/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/v1/system/health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: config-volume
+        configMap:
+          name: marwan-hub-config
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: marwan-hub-data-pvc
+      - name: logs-volume
+        emptyDir: {}
+
+---
+# Service للتعريض
+apiVersion: v1
+kind: Service
+metadata:
+  name: marwan-hub-service
+  namespace: marwan-hub
+spec:
+  selector:
+    app: marwan-hub
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+  - name: https
+    port: 443
+    targetPort: 8443
+  type: ClusterIP
+
+---
+# Ingress للتعريض الخارجي
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: marwan-hub-ingress
+  namespace: marwan-hub
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - marwan-hub.example.com
+    secretName: marwan-hub-tls
+  rules:
+  - host: marwan-hub.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: marwan-hub-service
+            port:
+              number: 80
+
+---
+# Deployment لـ PostgreSQL
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: marwan-hub-postgres
+  namespace: marwan-hub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15-alpine
+        env:
+        - name: POSTGRES_DB
+          value: "marwan_hub"
+        - name: POSTGRES_USER
+          value: "marwan"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: marwan-hub-secrets
+              key: POSTGRES_PASSWORD
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+      volumes:
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: postgres-data-pvc
+
+---
+# Service لـ PostgreSQL
+apiVersion: v1
+kind: Service
+metadata:
+  name: marwan-hub-postgres
+  namespace: marwan-hub
+spec:
+  selector:
+    app: postgres
+  ports:
+  - port: 5432
+    targetPort: 5432
+  type: ClusterIP
+
+---
+# Deployment لـ Redis
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: marwan-hub-redis
+  namespace: marwan-hub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:7-alpine
+        command: ["redis-server", "--appendonly", "yes"]
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - name: redis-data
+          mountPath: /data
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "250m"
+      volumes:
+      - name: redis-data
+        persistentVolumeClaim:
+          claimName: redis-data-pvc
+
+---
+# Service لـ Redis
+apiVersion: v1
+kind: Service
+metadata:
+  name: marwan-hub-redis
+  namespace: marwan-hub
+spec:
+  selector:
+    app: redis
+  ports:
+  - port: 6379
+    targetPort: 6379
+  type: ClusterIP
+
+---
+# PVC للبيانات
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: marwan-hub-data-pvc
+  namespace: marwan-hub
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+# PVC لـ PostgreSQL
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-data-pvc
+  namespace: marwan-hub
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+
+---
+# PVC لـ Redis
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-data-pvc
+  namespace: marwan-hub
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+# Horizontal Pod Autoscaler
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: marwan-hub-hpa
+  namespace: marwan-hub
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: marwan-hub
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80

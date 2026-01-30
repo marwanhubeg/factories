@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  marwan-hub-factories:
+    build: .
+    container_name: marwan-hub-factories
+    ports:
+      - "8080:8080"
+      - "3000:3000"
+    environment:
+      - RUST_LOG=info
+      - DATABASE_URL=sqlite:/data/marwan_hub.db
+      - MHOS_VERSION=2.2.0
+      - ENABLE_GITHUB_INTEGRATION=true
+    volumes:
+      - ./data:/data
+      - ./templates:/app/templates
+      - ./outputs:/app/outputs
+    restart: unless-stopped
+    networks:
+      - marwan-hub-network
+
+  database:
+    image: postgres:15-alpine
+    container_name: marwan-hub-db
+    environment:
+      - POSTGRES_USER=marwan_hub
+      - POSTGRES_PASSWORD=secure_password_123
+      - POSTGRES_DB=marwan_hub
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - marwan-hub-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: marwan-hub-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - marwan-hub-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: marwan-hub-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - marwan-hub-factories
+    networks:
+      - marwan-hub-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  marwan-hub-network:
+    driver: bridge
+
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+x-healthcheck: &default-healthcheck
+  test: ["CMD", "curl", "-f", "http://localhost:8080/api/health"]
+  interval: 30s
+  timeout: 10s
+  retries: 3
+  start_period: 40s

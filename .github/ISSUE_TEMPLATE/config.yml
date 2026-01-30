@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "📖 التوثيق"
+    url: "https://marwan-hub.com/docs"
+    about: "راجع وثائق النظام"
+  - name: "💬 مناقشات المجتمع"
+    url: "https://github.com/marwan-hub/factories/discussions"
+    about: "شارك أفكارك مع المجتمع"
+  - name: "📧 الدعم عبر البريد"
+    url: "mailto:support@marwan-hub.com"
+    about: "اتصل بفريق الدعم"

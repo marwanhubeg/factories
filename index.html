@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marwan Hub Factories - لوحة التحكم</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #166088;
+            --accent: #ff6b6b;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+        }
+        
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .dashboard-header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .logo-icon {
+            color: var(--primary);
+            font-size: 2.5rem;
+        }
+        
+        .logo-text h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+        }
+        
+        .logo-text span {
+            color: var(--accent);
+        }
+        
+        .version-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .card-icon {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            text-align: center;
+            margin: 1rem 0;
+        }
+        
+        .stat-label {
+            text-align: center;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .feature-item {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .feature-icon {
+            color: var(--success);
+            font-size: 1.2rem;
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .action-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 10px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .action-btn:hover {
+            background: var(--secondary);
+        }
+        
+        .action-btn.secondary {
+            background: var(--secondary);
+        }
+        
+        .action-btn.secondary:hover {
+            background: var(--primary);
+        }
+        
+        .action-btn.accent {
+            background: var(--accent);
+        }
+        
+        .action-btn.accent:hover {
+            background: #ff5252;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-left: 0.5rem;
+        }
+        
+        .status-online {
+            background: var(--success);
+        }
+        
+        .status-offline {
+            background: var(--danger);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            color: white;
+            padding: 2rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 1rem;
+            }
+            
+            .dashboard-header {
+                padding: 1.5rem;
+            }
+            
+            .logo-text h1 {
+                font-size: 2rem;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- الهيدر -->
+        <header class="dashboard-header">
+            <div class="logo">
+                <i class="fas fa-industry logo-icon"></i>
+                <div class="logo-text">
+                    <h1>Marwan Hub <span>Factories</span></h1>
+                    <p>نظام المصانع الذكية للتعليم والإبداع</p>
+                </div>
+            </div>
+            <div class="version-badge">v3.0.0</div>
+        </header>
+
+        <!-- شبكة الإحصائيات -->
+        <div class="dashboard-grid">
+            <!-- بطاقة النظام -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-server card-icon"></i>
+                        حالة النظام
+                    </h3>
+                    <span class="status-indicator status-online"></span>
+                </div>
+                <div class="stat-number" id="uptime">99.95%</div>
+                <div class="stat-label">وقت التشغيل</div>
+                
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>Rust API</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>نظام MH-OS</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <span>4 أنواع مصانع</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- بطاقة الأداء -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-chart-line card-icon"></i>
+                        الأداء
+                    </h3>
+                </div>
+                <div class="stat-number" id="performance">1.2K</div>
+                <div class="stat-label">طلب/ثانية</div>
+                
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <i class="fas fa-bolt feature-icon"></i>
+                        <span>زمن استجابة: 85ms</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-memory feature-icon"></i>
+                        <span>ذاكرة: 450MB</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-database feature-icon"></i>
+                        <span>قاعدة بيانات: 99.9%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- بطاقة المصانع -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-industry card-icon"></i>
+                        المصانع النشطة
+                    </h3>
+                </div>
+                <div class="stat-number" id="factories">4</div>
+                <div class="stat-label">مصنع نشط</div>
+                
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <i class="fas fa-graduation-cap feature-icon"></i>
+                        <span>التعليم</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-paint-brush feature-icon"></i>
+                        <span>الإبداع</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-building feature-icon"></i>
+                        <span>الشركات</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-laptop-code feature-icon"></i>
+                        <span>التكنولوجيا</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- الإجراءات السريعة -->
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-bolt card-icon"></i>
+                    الإجراءات السريعة
+                </h3>
+            </div>
+            
+            <div class="quick-actions">
+                <button class="action-btn" onclick="window.open('https://github.com/marwan-hub/factories', '_blank')">
+                    <i class="fab fa-github"></i>
+                    GitHub
+                </button>
+                
+                <button class="action-btn secondary" onclick="window.open('./docs', '_blank')">
+                    <i class="fas fa-book"></i>
+                    التوثيق
+                </button>
+                
+                <button class="action-btn accent" onclick="downloadLatest()">
+                    <i class="fas fa-download"></i>
+                    تحميل v3.0.0
+                </button>
+                
+                <button class="action-btn" onclick="window.open('https://demo.marwan-hub.com', '_blank')">
+                    <i class="fas fa-play-circle"></i>
+                    تجربة حية
+                </button>
+            </div>
+        </div>
+
+        <!-- الميزات الرئيسية -->
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-star card-icon"></i>
+                    الميزات الرئيسية
+                </h3>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-item">
+                    <i class="fas fa-robot feature-icon"></i>
+                    <div>
+                        <strong>MH-OS v2.2</strong>
+                        <p>نظام تشغيل ذكي للمصانع</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <i class="fas fa-code feature-icon"></i>
+                    <div>
+                        <strong>Rust بالكامل</strong>
+                        <p>أداء عالي وأمان</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <i class="fas fa-cloud feature-icon"></i>
+                    <div>
+                        <strong>نشر متعدد</strong>
+                        <p>Docker, K8s, AWS, Termux</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <i class="fas fa-language feature-icon"></i>
+                    <div>
+                        <strong>دعم عربي</strong>
+                        <p>واجهات وتوثيق عربي</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- الفوتر -->
+        <footer class="footer">
+            <p>© 2024 Marwan Hub Factories. جميع الحقوق محفوظة</p>
+            
+            <div class="footer-links">
+                <a href="https://github.com/marwan-hub/factories">
+                    <i class="fab fa-github"></i>
+                    GitHub
+                </a>
+                <a href="https://docs.marwan-hub.com">
+                    <i class="fas fa-book"></i>
+                    التوثيق
+                </a>
+                <a href="https://community.marwan-hub.com">
+                    <i class="fas fa-users"></i>
+                    المجتمع
+                </a>
+                <a href="mailto:support@marwan-hub.com">
+                    <i class="fas fa-envelope"></i>
+                    الدعم
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // محاكاة البيانات الحية
+        function updateLiveStats() {
+            // تحديث وقت التشغيل
+            const uptime = document.getElementById('uptime');
+            const randomUptime = (99.9 + Math.random() * 0.1).toFixed(2);
+            uptime.textContent = `${randomUptime}%`;
+            
+            // تحديث الأداء
+            const performance = document.getElementById('performance');
+            const randomPerformance = (1000 + Math.random() * 500).toFixed(0);
+            performance.textContent = `${randomPerformance}`;
+            
+            // تحديث المصانع
+            const factories = document.getElementById('factories');
+            const randomFactories = 4 + Math.floor(Math.random() * 2);
+            factories.textContent = `${randomFactories}`;
+        }
+        
+        // تحديث كل 5 ثواني
+        setInterval(updateLiveStats, 5000);
+        
+        // تحميل أحدث إصدار
+        function downloadLatest() {
+            const links = [
+                'https://github.com/marwan-hub/factories/releases/download/v3.0.0/marwan-hub-linux-x64.tar.gz',
+                'https://github.com/marwan-hub/factories/releases/download/v3.0.0/marwan-hub-macos.tar.gz',
+                'https://github.com/marwan-hub/factories/releases/download/v3.0.0/marwan-hub-windows.zip'
+            ];
+            
+            const platform = navigator.platform.toLowerCase();
+            let downloadUrl;
+            
+            if (platform.includes('win')) {
+                downloadUrl = links[2];
+            } else if (platform.includes('mac')) {
+                downloadUrl = links[1];
+            } else {
+                downloadUrl = links[0];
+            }
+            
+            window.open(downloadUrl, '_blank');
+        }
+        
+        // تهيئة عند التحميل
+        document.addEventListener('DOMContentLoaded', function() {
+            updateLiveStats();
+            
+            // إضافة تأثيرات للبطاقات
+            const cards = document.querySelectorAll('.dashboard-card');
+            cards.forEach((card, index) => {
+                card.style.animation = `fadeInUp 0.5s ease ${index * 0.1}s forwards`;
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+            });
+            
+            // إضافة أنيميشن CSS
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeInUp {
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+        
+        // تحديث التاريخ
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            const dateTime = now.toLocaleDateString('ar-SA', options);
+            
+            const dateElement = document.createElement('p');
+            dateElement.className = 'date-time';
+            dateElement.textContent = dateTime;
+            dateElement.style.cssText = `
+                text-align: center;
+                margin-top: 1rem;
+                color: var(--dark);
+                font-size: 0.9rem;
+            `;
+            
+            const existingDate = document.querySelector('.date-time');
+            if (existingDate) {
+                existingDate.textContent = dateTime;
+            } else {
+                document.querySelector('.dashboard-header').appendChild(dateElement);
+            }
+        }
+        
+        // تحديث التاريخ كل ثانية
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+    </script>
+</body>
+</html>

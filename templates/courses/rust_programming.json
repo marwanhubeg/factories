@@ -1,0 +1,156 @@
+{
+  "course_template": "rust_programming",
+  "metadata": {
+    "title": "دورة البرمجة بلغة Rust للمبتدئين",
+    "description": "دورة شاملة لتعلم لغة Rust من الصفر وحتى الاحتراف",
+    "author": "Marwan Hub التعليمية",
+    "version": "1.0",
+    "language": "ar",
+    "difficulty": "مبتدئ إلى متوسط",
+    "estimated_hours": 40,
+    "created_date": "2024-03-15"
+  },
+  "structure": {
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "مقدمة في لغة Rust",
+        "description": "التعريف باللغة ومميزاتها وتثبيت الأدوات",
+        "estimated_time": "4 ساعات",
+        "lessons": [
+          {
+            "id": "lesson_1_1",
+            "title": "ما هي لغة Rust ولماذا يجب تعلمها؟",
+            "type": "video",
+            "duration": "30 دقيقة",
+            "content": "https://cdn.marwan-hub.com/courses/rust/intro.mp4",
+            "resources": [
+              {
+                "title": "الموقع الرسمي لـ Rust",
+                "url": "https://www.rust-lang.org"
+              },
+              {
+                "title": "كتاب Rust الرسمي",
+                "url": "https://doc.rust-lang.org/book/"
+              }
+            ],
+            "objectives": [
+              "فهم تاريخ لغة Rust",
+              "معرفة مميزات Rust الفريدة",
+              "مقارنة Rust بلغات أخرى"
+            ]
+          },
+          {
+            "id": "lesson_1_2",
+            "title": "تثبيت Rust وأدوات التطوير",
+            "type": "tutorial",
+            "duration": "45 دقيقة",
+            "content": "## تثبيت Rust\n\n### 1. تثبيت Rustup\n```bash\ncurl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh\n```\n\n### 2. التحقق من التثبيت\n```bash\nrustc --version\ncargo --version\n```\n\n### 3. إعداد بيئة التطوير\n- تثبيت VS Code مع إضافة Rust Analyzer\n- تثبيت Rustfmt و Clippy\n\n### 4. إنشاء أول مشروع\n```bash\ncargo new hello_rust\ncd hello_rust\ncargo run\n```",
+            "exercises": [
+              {
+                "title": "تمرين: تثبيت Rust",
+                "description": "قم بتثبيت Rust على جهازك وأرسل لقطة شاشة للأوامر الناجحة",
+                "type": "practical"
+              }
+            ]
+          }
+        ],
+        "quiz": {
+          "title": "اختبار الوحدة الأولى",
+          "questions": [
+            {
+              "question": "ما هي الميزة الأساسية التي تميز Rust عن اللغات الأخرى؟",
+              "options": [
+                "أداء عالي بدون garbage collector",
+                "سهولة التعلم",
+                "توفر مكتبات كثيرة"
+              ],
+              "correct_answer": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "module_2",
+        "title": "أساسيات Rust",
+        "description": "تعلم أساسيات اللغة والمفاهيم الأساسية",
+        "estimated_time": "8 ساعات",
+        "lessons": [
+          {
+            "id": "lesson_2_1",
+            "title": "المتغيرات وأنواع البيانات",
+            "type": "video",
+            "duration": "45 دقيقة",
+            "content": "https://cdn.marwan-hub.com/courses/rust/variables.mp4",
+            "code_examples": [
+              {
+                "title": "تعريف المتغيرات",
+                "code": "fn main() {\n    // متغير قابل للتغيير\n    let mut x = 5;\n    println!(\"القيمة: {}\", x);\n    \n    // متغير ثابت\n    let y: i32 = 10;\n    \n    // إعادة تعيين\n    x = 6;\n    println!(\"القيمة الجديدة: {}\", x);\n}"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "resources": {
+    "books": [
+      {
+        "title": "The Rust Programming Language",
+        "author": "Steve Klabnik and Carol Nichols",
+        "url": "https://doc.rust-lang.org/book/"
+      },
+      {
+        "title": "Rust by Example",
+        "url": "https://doc.rust-lang.org/rust-by-example/"
+      }
+    ],
+    "tools": [
+      "Rustup",
+      "Cargo",
+      "Rust Analyzer",
+      "Rustfmt",
+      "Clippy"
+    ],
+    "communities": [
+      "منتدى Rust العربي",
+      "مجموعة Rust على Telegram",
+      "Stack Overflow (rust tag)"
+    ]
+  },
+  "projects": [
+    {
+      "title": "مشروع الآلة الحاسبة",
+      "description": "بناء آلة حاسبة تعمل من سطر الأوامر",
+      "difficulty": "سهل",
+      "technologies": ["Rust", "CLI"],
+      "requirements": [
+        "دعم العمليات الأساسية (جمع، طرح، ضرب، قسمة)",
+        "معالجة الأخطاء",
+        "واجهة سهلة الاستخدام"
+      ]
+    },
+    {
+      "title": "مدير المهام",
+      "description": "تطبيق لإدارة المهام اليومية",
+      "difficulty": "متوسط",
+      "technologies": ["Rust", "SQLite", "CLI"],
+      "requirements": [
+        "إضافة، حذف، تعديل المهام",
+        "حفظ البيانات في قاعدة بيانات",
+        "بحث وتصفية المهام"
+      ]
+    }
+  ],
+  "assessment": {
+    "grading_system": {
+      "quizzes": 30,
+      "exercises": 30,
+      "final_project": 40
+    },
+    "certification": {
+      "minimum_score": 70,
+      "certificate_template": "certificates/rust_certificate.html"
+    }
+  }
+}

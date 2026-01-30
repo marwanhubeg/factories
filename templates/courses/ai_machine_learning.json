@@ -1,0 +1,231 @@
+{
+  "course_template": "ai_machine_learning",
+  "metadata": {
+    "title": "دورة الذكاء الاصطناعي وتعلم الآلة",
+    "subtitle": "من المبتدئ إلى المحترف في 60 ساعة",
+    "description": "دورة شاملة تغطي أساسيات الذكاء الاصطناعي، تعلم الآلة، والتعلم العميق مع تطبيقات عملية",
+    "instructor": "د. أحمد التميمي",
+    "organization": "Marwan Hub للأبحاث التقنية",
+    "language": "ar",
+    "level": "متوسط",
+    "total_hours": 60,
+    "prerequisites": ["برمجة بايثون", "رياضيات أساسية", "إحصاء"],
+    "created_date": "2024-03-15",
+    "last_updated": "2024-03-15",
+    "version": "2.1"
+  },
+  "learning_outcomes": [
+    "فهم المفاهيم الأساسية للذكاء الاصطناعي وتعلم الآلة",
+    "تطبيق خوارزميات تعلم الآلة باستخدام Python وScikit-learn",
+    "بناء نماذج تعلم عميق باستخدام TensorFlow وPyTorch",
+    "معالجة البيانات وتحليلها للاستخدام في النماذج",
+    "تقييم وتحسين أداء النماذج",
+    "بناء مشاريع عملية في مجالات مختلفة"
+  ],
+  "curriculum": {
+    "modules": [
+      {
+        "id": "module_ai_foundation",
+        "title": "أساسيات الذكاء الاصطناعي",
+        "duration": "8 ساعات",
+        "icon": "🧠",
+        "color": "#4CAF50",
+        "units": [
+          {
+            "id": "unit_1_1",
+            "title": "مقدمة في الذكاء الاصطناعي",
+            "type": "theory",
+            "duration": "2 ساعة",
+            "topics": [
+              "تاريخ الذكاء الاصطناعي",
+              "مجالات الذكاء الاصطناعي",
+              "التحديات والأخلاقيات",
+              "التطبيقات العملية"
+            ],
+            "resources": [
+              {
+                "type": "video",
+                "title": "مقدمة شاملة للذكاء الاصطناعي",
+                "duration": "45 دقيقة",
+                "url": "https://cdn.marwan-hub.com/ai/intro.mp4"
+              },
+              {
+                "type": "article",
+                "title": "دليل المبتدئين للذكاء الاصطناعي",
+                "url": "https://docs.marwan-hub.com/ai/basics"
+              }
+            ]
+          },
+          {
+            "id": "unit_1_2",
+            "title": "الرياضيات الأساسية للذكاء الاصطناعي",
+            "type": "theory_practical",
+            "duration": "3 ساعات",
+            "topics": [
+              "الجبر الخطي للنماذج",
+              "حساب التفاضل والتكامل",
+              "الإحصاء والاحتمالات",
+              "التحسين الرياضي"
+            ],
+            "practice_files": [
+              "notebooks/01_linear_algebra.ipynb",
+              "notebooks/02_calculus.ipynb",
+              "notebooks/03_statistics.ipynb"
+            ]
+          }
+        ],
+        "project": {
+          "title": "تحليل مجموعة بيانات بسيطة",
+          "description": "تحليل واستكشاف مجموعة بيانات باستخدام Python وPandas",
+          "dataset": "datasets/housing_prices.csv",
+          "deliverables": ["تحليل استكشافي", "تصور البيانات", "تقرير النتائج"]
+        }
+      },
+      {
+        "id": "module_ml_basics",
+        "title": "أساسيات تعلم الآلة",
+        "duration": "15 ساعة",
+        "icon": "🤖",
+        "color": "#2196F3",
+        "units": [
+          {
+            "id": "unit_2_1",
+            "title": "تعلم الآلة الموجه",
+            "type": "practical",
+            "duration": "5 ساعات",
+            "algorithms": [
+              {
+                "name": "الانحدار الخطي",
+                "description": "توقع قيم مستمرة",
+                "implementation": "sklearn.linear_model.LinearRegression",
+                "use_cases": ["توقع الأسعار", "التحليل الاقتصادي"]
+              },
+              {
+                "name": "الانحدار اللوجستي",
+                "description": "التصنيف الثنائي",
+                "implementation": "sklearn.linear_model.LogisticRegression",
+                "use_cases": ["التشخيص الطبي", "كشف الاحتيال"]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "practical_components": {
+    "labs": [
+      {
+        "id": "lab_1",
+        "title": "معالجة البيانات وإعدادها",
+        "tools": ["Pandas", "NumPy", "Matplotlib"],
+        "steps": [
+          "تحميل البيانات من مصادر مختلفة",
+          "تنظيف البيانات ومعالجة القيم المفقودة",
+          "تحويل البيانات وترميز المتغيرات الفئوية",
+          "تقسيم البيانات (تدريب، اختبار، تحقق)"
+        ]
+      }
+    ],
+    "projects": [
+      {
+        "id": "project_1",
+        "title": "نظام تصنيف الصور",
+        "description": "بناء نظام لتصنيف صور الحيوانات باستخدام CNN",
+        "technologies": ["TensorFlow", "Keras", "OpenCV"],
+        "dataset": "CIFAR-10",
+        "milestones": [
+          {
+            "title": "تحضير البيانات",
+            "duration": "3 أيام",
+            "deliverables": ["تحميل البيانات", "معالجة الصور", "تقسيم البيانات"]
+          }
+        ]
+      }
+    ]
+  },
+  "evaluation": {
+    "grading_scheme": {
+      "quizzes": 20,
+      "assignments": 30,
+      "mid_exam": 20,
+      "final_project": 30
+    },
+    "certification": {
+      "requirements": {
+        "minimum_score": 75,
+        "complete_all_projects": true,
+        "attendance_rate": 80
+      },
+      "certificate": {
+        "template": "certificates/ai_certificate.html",
+        "issuer": "Marwan Hub للأبحاث التقنية",
+        "accreditation": "معتمد من الجمعية العربية للذكاء الاصطناعي"
+      }
+    }
+  },
+  "resources": {
+    "required_textbooks": [
+      {
+        "title": "Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow",
+        "author": "Aurélien Géron",
+        "edition": "3rd",
+        "isbn": "978-1-492-03264-9"
+      }
+    ],
+    "software": [
+      {
+        "name": "Python 3.8+",
+        "purpose": "اللغة الرئيسية للبرمجة",
+        "installation": "https://www.python.org/downloads/"
+      },
+      {
+        "name": "Jupyter Notebook",
+        "purpose": "التجربة والتحليل التفاعلي",
+        "installation": "pip install notebook"
+      }
+    ],
+    "datasets": [
+      {
+        "name": "Iris Dataset",
+        "description": "مجموعة بيانات الزهور للتصنيف",
+        "url": "https://archive.ics.uci.edu/ml/datasets/iris"
+      },
+      {
+        "name": "MNIST",
+        "description": "أرقام مكتوبة بخط اليد",
+        "url": "http://yann.lecun.com/exdb/mnist/"
+      }
+    ]
+  },
+  "support": {
+    "forum_url": "https://community.marwan-hub.com/ai-course",
+    "office_hours": [
+      {
+        "day": "الاثنين",
+        "time": "18:00 - 20:00",
+        "instructor": "د. أحمد التميمي"
+      }
+    ],
+    "ta_support": {
+      "available": true,
+      "schedule": "يومي 16:00 - 22:00",
+      "contact": "ai-support@marwan-hub.com"
+    }
+  },
+  "schedule": {
+    "weekly_plan": [
+      {
+        "week": 1,
+        "topics": ["مقدمة الذكاء الاصطناعي", "الرياضيات الأساسية"],
+        "assignments": ["تمرين الرياضيات", "تحميل الأدوات"],
+        "readings": ["الفصل 1-2 من الكتاب"]
+      }
+    ],
+    "important_dates": {
+      "start_date": "2024-04-01",
+      "end_date": "2024-06-30",
+      "project_submission": "2024-06-20",
+      "final_exam": "2024-06-25"
+    }
+  }
+}
