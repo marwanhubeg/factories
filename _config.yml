@@ -1,0 +1,39 @@
+# تكوين GitHub Pages
+title: Marwan Hub Factories
+description: نظام المصانع الذكية بلغة Rust للعالم العربي
+baseurl: "/factories"
+url: "https://marwanhubeg.github.io"
+repository: marwanhubeg/factories
+
+# التكوين
+theme: jekyll-theme-cayman
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
+  - jekyll-feed
+
+# اللغة والاتجاه
+lang: ar
+rtl: true
+
+# المؤلف
+author:
+  name: Marwan Hub
+  email: support@marwan-hub.com
+  github: marwanhubeg
+
+# الروابط الاجتماعية
+social:
+  github: marwanhubeg
+  twitter: MarwanHub
+  linkedin: marwan-hub
+
+# استثناءات
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - target
+  - Cargo.toml
+  - Cargo.lock

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Sitemap: https://marwanhubeg.github.io/factories/sitemap.xml
+
+# Disallow
+Disallow: /target/
+Disallow: /.github/
+Disallow: /node_modules/
