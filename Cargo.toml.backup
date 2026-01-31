@@ -1,0 +1,96 @@
+[package]
+name = "marwan-hub-factories"
+version = "3.0.0"
+edition = "2021"
+authors = ["Marwan Hub Team <marwan@marwan-hub.com>"]
+description = "نظام المصانع الذكية للتعليم والإبداع والتقنية"
+license = "MIT"
+repository = "https://github.com/marwanhubeg/factories"
+homepage = "https://marwan-hub.com"
+keywords = ["rust", "ai", "education", "arabic", "api", "cli"]
+categories = ["command-line-utilities", "web-programming", "api-bindings"]
+
+# نقاط الدخول المتعددة
+[[bin]]
+name = "marwan-hub"
+path = "src/cli/main.rs"
+
+[[bin]]
+name = "mh-api"
+path = "src/api/main.rs"
+
+# المكتبات الداخلية
+[lib]
+name = "marwan_hub_factories"
+path = "src/lib.rs"
+
+[dependencies]
+# التواريخ والأوقات
+chrono = { version = "0.4", features = ["serde"] }
+
+# الويب وAPI
+actix-web = "4.0"
+actix-cors = "0.7"
+actix-rt = "2.0"
+
+# سطر الأوامر
+clap = { version = "4.0", features = ["derive", "cargo"] }
+
+# JSON
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# غير متزامن
+tokio = { version = "1.0", features = ["full"] }
+futures = "0.3"
+async-trait = "0.1"
+
+# قواعد البيانات
+
+# الذاكرة المؤقتة
+
+# التسجيل
+log = "0.4"
+env_logger = "0.10"
+
+# الأمان
+jsonwebtoken = "8.0"
+rand = "0.8"
+bcrypt = "0.15"
+
+# البيئة
+dotenv = "0.15"
+
+# التوثيق
+utoipa = { version = "3.0", features = ["actix_extras"] }
+utoipa-swagger-ui = { version = "3.0", features = ["actix-web"] }
+
+# القوالب (للواجهات المستقبلية)
+tera = "1.20"
+
+# الإحصائيات
+
+[dev-dependencies]
+# الاختبارات
+actix-http-test = "3.0"
+assert-json-diff = "2.0"
+tempfile = "3.0"
+
+# اختبارات الأداء
+criterion = "0.5"
+
+# اختبارات الأمان
+proptest = "1.4"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = 'abort'
+
+[profile.dev]
+opt-level = 0
+debug = true
+
+[workspace]
+members = ["."]
