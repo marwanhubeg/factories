@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marwan Hub Factories - لوحة التحكم المتقدمة</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: white;
+            min-height: 100vh;
+            direction: rtl;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .header h1 {
+            color: #4cc9f0;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            color: #b0b0ff;
+            font-size: 1.2rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: #4cc9f0;
+        }
+        
+        .stat-card i {
+            font-size: 2.5rem;
+            color: #4cc9f0;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .factories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .factory-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .factory-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .factory-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #4cc9f0;
+        }
+        
+        .status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .status.ready {
+            background: rgba(76, 201, 240, 0.2);
+            color: #4cc9f0;
+        }
+        
+        .status.active {
+            background: rgba(67, 97, 238, 0.2);
+            color: #4361ee;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #4361ee;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            margin: 5px;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #3a0ca3;
+        }
+        
+        .btn-success {
+            background: rgba(76, 201, 240, 0.2);
+            color: #4cc9f0;
+            border: 1px solid rgba(76, 201, 240, 0.3);
+        }
+        
+        .btn-success:hover {
+            background: rgba(76, 201, 240, 0.3);
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            background: #4361ee;
+            border-color: #4361ee;
+        }
+        
+        .content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        .content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: right;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        th {
+            background: rgba(67, 97, 238, 0.1);
+            color: #4cc9f0;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .factories-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-industry"></i> Marwan Hub Factories v3.0.0</h1>
+            <p>نظام إدارة المصانع الذكية - لوحة التحكم المتقدمة</p>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('overview')"><i class="fas fa-home"></i> نظرة عامة</div>
+            <div class="tab" onclick="showTab('factories')"><i class="fas fa-industry"></i> المصانع</div>
+            <div class="tab" onclick="showTab('products')"><i class="fas fa-box"></i> المنتجات</div>
+            <div class="tab" onclick="showTab('exports')"><i class="fas fa-download"></i> التصدير</div>
+            <div class="tab" onclick="showTab('api')"><i class="fas fa-code"></i> API</div>
+        </div>
+        
+        <!-- نظرة عامة -->
+        <div id="overview" class="content active">
+            <h2 style="margin-bottom: 1.5rem; color: #4cc9f0;"><i class="fas fa-chart-line"></i> نظرة عامة على النظام</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-industry"></i>
+                    <h3 id="total-factories">4</h3>
+                    <p>المصانع النشطة</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-box"></i>
+                    <h3 id="total-products">0</h3>
+                    <p>المنتجات</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-database"></i>
+                    <h3 id="system-status">نشط</h3>
+                    <p>حالة النظام</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-clock"></i>
+                    <h3 id="uptime">0 د</h3>
+                    <p>مدة التشغيل</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin: 2rem 0;">
+                <button class="btn" onclick="refreshData()"><i class="fas fa-sync-alt"></i> تحديث البيانات</button>
+                <a href="dashboard_live.html" class="btn btn-success" target="_blank"><i class="fas fa-tachometer-alt"></i> لوحة التحكم المباشرة</a>
+            </div>
+        </div>
+        
+        <!-- المصانع -->
+        <div id="factories" class="content">
+            <h2 style="margin-bottom: 1.5rem; color: #4cc9f0;"><i class="fas fa-industry"></i> إدارة المصانع</h2>
+            
+            <div class="factories-grid">
+                <div class="factory-card">
+                    <div class="factory-header">
+                        <div class="factory-title">
+                            <i class="fas fa-graduation-cap"></i>
+                            <h3>مصنع التعليم</h3>
+                        </div>
+                        <span class="status ready" id="edu-status">جاهز</span>
+                    </div>
+                    <p>إنتاج المحتوى التعليمي، الدورات، والمواد التدريبية</p>
+                    <div style="margin-top: 1rem;">
+                        <button class="btn" onclick="startFactory('education')"><i class="fas fa-play"></i> بدء الإنتاج</button>
+                        <button class="btn btn-success" onclick="exportFactory('education')"><i class="fas fa-download"></i> تصدير</button>
+                    </div>
+                </div>
+                
+                <div class="factory-card">
+                    <div class="factory-header">
+                        <div class="factory-title">
+                            <i class="fas fa-palette"></i>
+                            <h3>مصنع الإبداع</h3>
+                        </div>
+                        <span class="status ready" id="creative-status">جاهز</span>
+                    </div>
+                    <p>إنتاج التصاميم، الشعارات، والمحتوى الإبداعي</p>
+                    <div style="margin-top: 1rem;">
+                        <button class="btn" onclick="startFactory('creative')"><i class="fas fa-play"></i> بدء الإنتاج</button>
+                        <button class="btn btn-success" onclick="exportFactory('creative')"><i class="fas fa-download"></i> تصدير</button>
+                    </div>
+                </div>
+                
+                <div class="factory-card">
+                    <div class="factory-header">
+                        <div class="factory-title">
+                            <i class="fas fa-briefcase"></i>
+                            <h3>مصنع الشركات</h3>
+                        </div>
+                        <span class="status ready" id="corporate-status">جاهز</span>
+                    </div>
+                    <p>إنتاج التقارير، العروض، والمستندات المؤسسية</p>
+                    <div style="margin-top: 1rem;">
+                        <button class="btn" onclick="startFactory('corporate')"><i class="fas fa-play"></i> بدء الإنتاج</button>
+                        <button class="btn btn-success" onclick="exportFactory('corporate')"><i class="fas fa-download"></i> تصدير</button>
+                    </div>
+                </div>
+                
+                <div class="factory-card">
+                    <div class="factory-header">
+                        <div class="factory-title">
+                            <i class="fas fa-laptop-code"></i>
+                            <h3>مصنع التقنية</h3>
+                        </div>
+                        <span class="status ready" id="tech-status">جاهز</span>
+                    </div>
+                    <p>إنتاج الكود، المكتبات، والمكونات التقنية</p>
+                    <div style="margin-top: 1rem;">
+                        <button class="btn" onclick="startFactory('technology')"><i class="fas fa-play"></i> بدء الإنتاج</button>
+                        <button class="btn btn-success" onclick="exportFactory('technology')"><i class="fas fa-download"></i> تصدير</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- المنتجات -->
+        <div id="products" class="content">
+            <h2 style="margin-bottom: 1.5rem; color: #4cc9f0;"><i class="fas fa-box"></i> إدارة المنتجات</h2>
+            
+            <div style="margin-bottom: 1rem;">
+                <button class="btn" onclick="loadProducts()"><i class="fas fa-sync-alt"></i> تحديث القائمة</button>
+            </div>
+            
+            <table id="products-table">
+                <thead>
+                    <tr>
+                        <th>المصنع</th>
+                        <th>اسم المنتج</th>
+                        <th>الحجم</th>
+                        <th>التاريخ</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- سيتم ملؤها بالبيانات -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- التصدير -->
+        <div id="exports" class="content">
+            <h2 style="margin-bottom: 1.5rem; color: #4cc9f0;"><i class="fas fa-download"></i> نظام التصدير</h2>
+            
+            <div style="margin-bottom: 1rem;">
+                <button class="btn" onclick="loadExports()"><i class="fas fa-sync-alt"></i> تحديث القائمة</button>
+            </div>
+            
+            <table id="exports-table">
+                <thead>
+                    <tr>
+                        <th>اسم الملف</th>
+                        <th>الحجم</th>
+                        <th>التاريخ</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- سيتم ملؤها بالبيانات -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- API -->
+        <div id="api" class="content">
+            <h2 style="margin-bottom: 1.5rem; color: #4cc9f0;"><i class="fas fa-code"></i> واجهة API</h2>
+            
+            <div class="factory-card">
+                <h3><i class="fas fa-link"></i> نقاط API المتاحة:</h3>
+                <ul style="margin: 1rem 0; padding-right: 20px;">
+                    <li><strong>GET /api/factories</strong> - حالة المصانع</li>
+                    <li><strong>GET /api/products</strong> - قائمة المنتجات</li>
+                    <li><strong>GET /api/exports</strong> - الملفات المصدرة</li>
+                    <li><strong>POST /api/factories/start</strong> - بدء تشغيل مصنع</li>
+                    <li><strong>POST /api/export</strong> - تصدير المنتجات</li>
+                </ul>
+                
+                <h3><i class="fas fa-terminal"></i> اختبار API:</h3>
+                <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <code style="color: #4cc9f0;">curl http://localhost:8000/api/factories</code>
+                </div>
+                
+                <button class="btn" onclick="testAPI()"><i class="fas fa-bolt"></i> اختبار API الآن</button>
+                <div id="api-result" style="margin-top: 1rem;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let startTime = new Date();
+        
+        // تحديث مدة التشغيل
+        function updateUptime() {
+            const now = new Date();
+            const diff = Math.floor((now - startTime) / 1000);
+            const minutes = Math.floor(diff / 60);
+            const seconds = diff % 60;
+            document.getElementById('uptime').textContent = `${minutes} د ${seconds} ث`;
+        }
+        
+        // تحديث البيانات
+        async function refreshData() {
+            await updateFactoriesStatus();
+            await loadProducts();
+            await loadExports();
+            alert('✅ تم تحديث البيانات بنجاح');
+        }
+        
+        // تحديث حالة المصانع
+        async function updateFactoriesStatus() {
+            try {
+                const response = await fetch('/api/factories');
+                const data = await response.json();
+                
+                // تحديث حالة كل مصنع
+                document.getElementById('edu-status').textContent = data.education?.status || 'جاهز';
+                document.getElementById('creative-status').textContent = data.creative?.status || 'جاهز';
+                document.getElementById('corporate-status').textContent = data.corporate?.status || 'جاهز';
+                document.getElementById('tech-status').textContent = data.technology?.status || 'جاهز';
+                
+                // تحديث عدد المصانع
+                document.getElementById('total-factories').textContent = Object.keys(data).length;
+                
+            } catch (error) {
+                console.error('Error fetching factories status:', error);
+            }
+        }
+        
+        // تحميل المنتجات
+        async function loadProducts() {
+            try {
+                const response = await fetch('/api/products');
+                const data = await response.json();
+                
+                const tbody = document.querySelector('#products-table tbody');
+                let html = '';
+                
+                if (data.products && data.products.length > 0) {
+                    data.products.forEach(product => {
+                        const date = new Date(product.created).toLocaleDateString('ar-EG');
+                        const sizeKB = (product.size / 1024).toFixed(1);
+                        
+                        html += `
+                            <tr>
+                                <td>${product.factory}</td>
+                                <td>${product.name}</td>
+                                <td>${sizeKB} KB</td>
+                                <td>${date}</td>
+                                <td><a href="${product.path}" class="btn btn-success" target="_blank">تنزيل</a></td>
+                            </tr>
+                        `;
+                    });
+                    
+                    document.getElementById('total-products').textContent = data.products.length;
+                } else {
+                    html = '<tr><td colspan="5" style="text-align: center;">لا توجد منتجات</td></tr>';
+                }
+                
+                tbody.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Error loading products:', error);
+            }
+        }
+        
+        // تحميل الصادرات
+        async function loadExports() {
+            try {
+                const response = await fetch('/api/exports');
+                const data = await response.json();
+                
+                const tbody = document.querySelector('#exports-table tbody');
+                let html = '';
+                
+                if (data.exports && data.exports.length > 0) {
+                    data.exports.forEach(exp => {
+                        const date = new Date(exp.created).toLocaleDateString('ar-EG');
+                        const sizeMB = (exp.size / (1024*1024)).toFixed(2);
+                        
+                        html += `
+                            <tr>
+                                <td>${exp.name}</td>
+                                <td>${sizeMB} MB</td>
+                                <td>${date}</td>
+                                <td><a href="${exp.download_url}" class="btn btn-success" target="_blank">تنزيل</a></td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    html = '<tr><td colspan="4" style="text-align: center;">لا توجد ملفات مصدرة</td></tr>';
+                }
+                
+                tbody.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Error loading exports:', error);
+            }
+        }
+        
+        // بدء تشغيل مصنع
+        async function startFactory(factoryType) {
+            try {
+                // تحديث الحالة مباشرة
+                const statusElement = document.getElementById(`${factoryType}-status`);
+                if (statusElement) {
+                    statusElement.textContent = 'يعمل...';
+                    statusElement.className = 'status active';
+                }
+                
+                // إرسال طلب البدء
+                const response = await fetch('/api/factories/start', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ factory_type: factoryType })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert(`✅ تم بدء تشغيل مصنع ${factoryType}`);
+                    
+                    // العودة للحالة الجاهزة بعد 3 ثواني
+                    setTimeout(() => {
+                        if (statusElement) {
+                            statusElement.textContent = 'جاهز';
+                            statusElement.className = 'status ready';
+                        }
+                        loadProducts(); // تحديث قائمة المنتجات
+                    }, 3000);
+                } else {
+                    alert(`❌ فشل: ${data.message}`);
+                    if (statusElement) {
+                        statusElement.textContent = 'جاهز';
+                        statusElement.className = 'status ready';
+                    }
+                }
+                
+            } catch (error) {
+                alert('❌ حدث خطأ في الاتصال بالخادم');
+                console.error('Error starting factory:', error);
+            }
+        }
+        
+        // تصدير منتجات المصنع
+        async function exportFactory(factoryType) {
+            try {
+                const response = await fetch('/api/export', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ factory_type: factoryType })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert(`✅ تم تصدير ${factoryType} بنجاح!\nالملف: ${data.export_file}`);
+                    loadExports(); // تحديث قائمة الصادرات
+                } else {
+                    alert(`❌ فشل: ${data.message}`);
+                }
+                
+            } catch (error) {
+                alert('❌ حدث خطأ في التصدير');
+                console.error('Error exporting:', error);
+            }
+        }
+        
+        // اختبار API
+        async function testAPI() {
+            try {
+                const response = await fetch('/api/factories');
+                const data = await response.json();
+                
+                document.getElementById('api-result').innerHTML = `
+                    <div style="background: rgba(0,255,0,0.1); padding: 1rem; border-radius: 8px; border: 1px solid rgba(0,255,0,0.3);">
+                        <strong>✅ API يعمل بنجاح!</strong>
+                        <pre style="margin-top: 10px; overflow: auto;">${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+                
+            } catch (error) {
+                document.getElementById('api-result').innerHTML = `
+                    <div style="background: rgba(255,0,0,0.1); padding: 1rem; border-radius: 8px; border: 1px solid rgba(255,0,0,0.3);">
+                        <strong>❌ فشل في الاتصال بالAPI</strong>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // إظهار/إخفاء التبويبات
+        function showTab(tabId) {
+            // إخفاء جميع المحتويات
+            document.querySelectorAll('.content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // إزالة النشط من جميع التبويبات
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // إظهار المحتوى المطلوب
+            document.getElementById(tabId).classList.add('active');
+            
+            // تحديث التبويب النشط
+            document.querySelector(`.tab[onclick*="${tabId}"]`).classList.add('active');
+            
+            // تحميل البيانات عند الحاجة
+            if (tabId === 'products') loadProducts();
+            if (tabId === 'exports') loadExports();
+        }
+        
+        // تحميل البيانات عند البدء
+        document.addEventListener('DOMContentLoaded', function() {
+            updateFactoriesStatus();
+            loadProducts();
+            loadExports();
+            
+            // تحديث مدة التشغيل كل ثانية
+            setInterval(updateUptime, 1000);
+            
+            // تحديث البيانات كل 30 ثانية
+            setInterval(updateFactoriesStatus, 30000);
+        });
+    </script>
+</body>
+</html>

@@ -2,55 +2,92 @@
 name = "marwan-hub-factories"
 version = "3.0.0"
 edition = "2021"
-authors = ["Marwan Hub <contact@marwanhub.com>"]
-description = "Smart Factory System with MH-OS v2.2"
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/marwanhubeg/marwan-hub-factories"
-readme = "README.md"
-keywords = ["factories", "automation", "mh-os", "education", "creative", "corporate", "technology"]
-categories = ["command-line-utilities", "web-programming", "development-tools"]
+authors = ["Marwan Hub Team <marwan@marwan-hub.com>"]
+description = "نظام المصانع الذكية للتعليم والإبداع والتقنية"
+license = "MIT"
+repository = "https://github.com/marwanhubeg/factories"
+homepage = "https://marwan-hub.com"
+keywords = ["rust", "ai", "education", "arabic", "api", "cli"]
+categories = ["command-line-utilities", "web-programming", "api-bindings"]
+build = "build.rs"  # <-- إضافة هذا السطر!
+
+# نقاط الدخول المتعددة
+[[bin]]
+name = "marwan-hub"
+path = "src/cli/main.rs"
+
+[[bin]]
+name = "mh-api"
+path = "src/api/main.rs"
+
+# المكتبات الداخلية
+[lib]
+name = "marwan_hub_factories"
+path = "src/lib.rs"
 
 [dependencies]
-actix-web = "4.0"
-actix-rt = "2.0"
+# التواريخ والأوقات
+chrono = { version = "0.4", features = ["serde"] }
+
+# الويب وAPI
+actix-web = "4.4"
+actix-cors = "0.7"
+actix-rt = "2.9"
+
+# سطر الأوامر
+clap = { version = "4.4", features = ["derive"] }
+
+# JSON
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-tokio = { version = "1.0", features = ["full"] }
-clap = { version = "4.0", features = ["derive"] }
-reqwest = { version = "0.11", features = ["json"] }
-dotenv = "0.15"
-chrono = { version = "0.4", features = ["serde"] }
-uuid = { version = "1.0", features = ["v4", "serde"] }
-sqlx = { version = "0.7", features = ["runtime-tokio-native-tls", "sqlite", "chrono", "uuid"] }
-thiserror = "1.0"
-log = "0.4"
-env_logger = "0.10"
-bytes = "1.0"
+
+# غير متزامن
+tokio = { version = "1.35", features = ["full"] }
 futures = "0.3"
 async-trait = "0.1"
+
+# إدارة الأخطاء
+thiserror = "1.0"
+
+# التسجيل
+log = "0.4"
+env_logger = "0.10"
+
+# الأمان
+jsonwebtoken = "8.0"
 rand = "0.8"
-regex = "1.0"
-tera = "1.0"
+bcrypt = "0.15"
+
+# البيئة
+dotenv = "0.15"
+
+# القوالب (للواجهات المستقبلية)
+tera = "1.20"
+
+[build-dependencies]
+chrono = "0.4"
 
 [dev-dependencies]
-tokio-test = "0.4"
-assert_cmd = "2.0"
-predicates = "3.0"
+# الاختبارات
+actix-http-test = "3.0"
+assert-json-diff = "2.0"
 tempfile = "3.0"
 
-[[bin]]
-name = "marwan-hub-factories"
-path = "src/main.rs"
+# اختبارات الأداء
+criterion = "0.5"
 
-[[bin]]
-name = "mh-cli"
-path = "src/cli/main.rs"
+# اختبارات الأمان
+proptest = "1.4"
 
 [profile.release]
 opt-level = 3
 lto = true
 codegen-units = 1
 panic = 'abort'
+
+[profile.dev]
+opt-level = 0
+debug = true
 
 [workspace]
 members = ["."]

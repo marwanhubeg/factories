@@ -1,0 +1,79 @@
+# Marwan Hub Factories v3.0.0 - Dockerfile نهائي للنشر
+FROM rust:latest as rust-builder
+
+WORKDIR /app
+
+# نسخ ملفات Rust
+COPY Cargo.toml Cargo.lock ./
+COPY src ./src
+COPY build.rs ./
+
+# بناء مشروع Rust
+RUN cargo build --release --bin api_server
+
+# ============================================
+FROM python:3.9-slim as python-builder
+
+WORKDIR /app
+
+# تثبيت الاعتمادات
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# نسخ ملفات Python
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# ============================================
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# تثبيت الاعتمادات الأساسية
+RUN apt-get update && apt-get install -y \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# نسخ التبعيات المبنية
+COPY --from=rust-builder /app/target/release/api_server /usr/local/bin/api_server
+COPY --from=python-builder /usr/local/lib/python3.9/site-packages /usr/local/lib/python3.9/site-packages
+
+# نسخ ملفات المشروع
+COPY . .
+
+# إنشاء المجلدات اللازمة
+RUN mkdir -p \
+    products/education \
+    products/creative \
+    products/corporate \
+    products/technology \
+    exports \
+    downloads \
+    templates \
+    deployments \
+    docs
+
+# نسخ الملفات الثابتة
+COPY templates ./templates
+COPY docs ./docs
+
+# تعيين الأذونات
+RUN chmod +x *.sh && \
+    chmod +x *.py
+
+# تعيين متغيرات البيئة
+ENV PORT=8000
+ENV RUST_LOG=info
+ENV PYTHONUNBUFFERED=1
+
+# المنفذ المكشوف
+EXPOSE 8000
+EXPOSE 9000
+
+# نقطة الدخول
+COPY start_unified_system.sh /app/start_unified_system.sh
+RUN chmod +x /app/start_unified_system.sh
+
+ENTRYPOINT ["/app/start_unified_system.sh"]

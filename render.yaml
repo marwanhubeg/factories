@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: marwan-hub-factories
+    env: docker
+    dockerfilePath: ./Dockerfile.final
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: RUST_LOG
+        value: info
+      - key: PYTHONUNBUFFERED
+        value: "1"
+    autoDeploy: true
+    healthCheckPath: /
+    numInstances: 1
+
+  - type: cron
+    name: database-backup
+    env: docker
+    schedule: "0 0 * * *"  # كل يوم في منتصف الليل
+    command: python3 database.py --backup
+    envVars:
+      - fromService: marwan-hub-factories
+        type: all

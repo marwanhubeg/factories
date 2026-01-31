@@ -1,0 +1,10 @@
+[build]
+builder = "nixpacks"
+  
+[deploy]
+startCommand = "./target/release/marwan-hub serve --port $PORT"
+healthcheckPath = "/api/v1/system/health"
+healthcheckTimeout = 30
+
+[[services]]
+port = 8080

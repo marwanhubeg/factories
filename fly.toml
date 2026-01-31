@@ -1,0 +1,27 @@
+app = "marwan-hub-factories"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile.final"
+
+[env]
+  PORT = "8000"
+  RUST_LOG = "info"
+  PYTHONUNBUFFERED = "1"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "10s"
+    method = "GET"
+    path = "/"
+
+[mounts]
+  source = "factories_data"
+  destination = "/app/products"

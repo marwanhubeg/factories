@@ -1,0 +1,27 @@
+// مكتبة معالجة النصوص العربية - Rust
+// إصدار 1.0.0
+
+pub struct ArabicText {
+    text: String,
+}
+
+impl ArabicText {
+    pub fn new(text: &str) -> Self {
+        ArabicText {
+            text: text.to_string(),
+        }
+    }
+    
+    pub fn normalize(&self) -> String {
+        // تطبيع النص العربي
+        self.text
+            .replace('أ', 'ا')
+            .replace('إ', 'ا')
+            .replace('آ', 'ا')
+            .replace('ة', 'ه')
+    }
+    
+    pub fn word_count(&self) -> usize {
+        self.text.split_whitespace().count()
+    }
+}

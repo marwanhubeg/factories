@@ -1,0 +1,13 @@
+{
+  "id": "creative_20260131_101440",
+  "name": "تصميم شعار تكنولوجي",
+  "factory_type": "creative",
+  "created_at": "2026-01-31T10:14:40.996318",
+  "format": "json",
+  "content": "{\n    \"design_type\": \"شعار\",\n    \"style\": \"تكنولوجي حديث\",\n    \"colors\": [\"#4361ee\", \"#4cc9f0\", \"#3a0ca3\"],\n    \"elements\": [\"شريحة\", \"موجات\", \"نجوم\"],\n    \"formats\": [\"SVG\", \"PNG\", \"AI\"]\n}",
+  "metadata": {
+    "version": "1.0",
+    "author": "Marwan Hub Factories",
+    "license": "MIT"
+  }
+}

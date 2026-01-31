@@ -1,0 +1,62 @@
+[
+  {
+    "id": "factory_1",
+    "name": "مصنع التعليم الذكي",
+    "type": "education",
+    "status": "running",
+    "efficiency": 92,
+    "production_rate": 155,
+    "health": "excellent",
+    "files_count": 1,
+    "has_rs_files": true,
+    "exists": true,
+    "icon": "🎓",
+    "last_maintenance": "2026-01-31",
+    "next_maintenance": "2026-02-15"
+  },
+  {
+    "id": "factory_2",
+    "name": "مصنع الإبداع الرقمي",
+    "type": "creative",
+    "status": "running",
+    "efficiency": 95,
+    "production_rate": 180,
+    "health": "excellent",
+    "files_count": 1,
+    "has_rs_files": true,
+    "exists": true,
+    "icon": "🎨",
+    "last_maintenance": "2026-01-31",
+    "next_maintenance": "2026-02-15"
+  },
+  {
+    "id": "factory_3",
+    "name": "مصنع التقنية المتقدمة",
+    "type": "technology",
+    "status": "running",
+    "efficiency": 98,
+    "production_rate": 137,
+    "health": "excellent",
+    "files_count": 1,
+    "has_rs_files": true,
+    "exists": true,
+    "icon": "💻",
+    "last_maintenance": "2026-01-31",
+    "next_maintenance": "2026-02-15"
+  },
+  {
+    "id": "factory_4",
+    "name": "مصنع حلول الأعمال",
+    "type": "corporate",
+    "status": "running",
+    "efficiency": 95,
+    "production_rate": 141,
+    "health": "excellent",
+    "files_count": 1,
+    "has_rs_files": true,
+    "exists": true,
+    "icon": "📊",
+    "last_maintenance": "2026-01-31",
+    "next_maintenance": "2026-02-15"
+  }
+]

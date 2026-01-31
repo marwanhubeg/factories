@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏭 نظام التحكم المتقدم - Marwan Hub Factories</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --dark: #2b2d42;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Cairo', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: var(--light);
+            min-height: 100vh;
+        }
+        
+        /* التنقل */
+        .navbar {
+            background: rgba(43, 45, 66, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(45deg, #4cc9f0, #4361ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-link {
+            color: var(--light);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .dashboard-header {
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-header h2 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+        
+        .dashboard-header p {
+            color: #aaa;
+            font-size: 1.1rem;
+        }
+        
+        /* بطاقات التحكم */
+        .control-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .control-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        
+        .control-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(67, 97, 238, 0.2);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card-header i {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        
+        .card-header h3 {
+            font-size: 1.3rem;
+            color: #fff;
+        }
+        
+        /* نموذج إنشاء طلب إنتاج */
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ddd;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.3);
+        }
+        
+        select.form-control {
+            cursor: pointer;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            opacity: 0.9;
+        }
+        
+        /* قائمة المصانع */
+        .factories-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .factory-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s;
+        }
+        
+        .factory-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .factory-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .factory-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(67, 97, 238, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .factory-info h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+            color: #fff;
+        }
+        
+        .factory-status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-running { background: rgba(76, 201, 240, 0.2); color: #4cc9f0; }
+        .status-idle { background: rgba(108, 117, 125, 0.2); color: #6c757d; }
+        .status-maintenance { background: rgba(247, 37, 133, 0.2); color: #f72585; }
+        
+        .factory-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+        
+        .metric {
+            text-align: center;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+        
+        .metric-value {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-top: 0.3rem;
+        }
+        
+        /* قائمة الطلبات */
+        .requests-table {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        
+        .table-header {
+            background: rgba(67, 97, 238, 0.2);
+            padding: 1rem;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr;
+            gap: 1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .table-row {
+            padding: 1rem;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr;
+            gap: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.3s;
+        }
+        
+        .table-row:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .request-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .status-pending { background: rgba(255, 193, 7, 0.2); color: #ffc107; }
+        .status-approved { background: rgba(40, 167, 69, 0.2); color: #28a745; }
+        .status-in-progress { background: rgba(23, 162, 184, 0.2); color: #17a2b8; }
+        
+        /* سجل التشغيل */
+        .log-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: 400px;
+            overflow-y: auto;
+            margin-bottom: 2rem;
+        }
+        
+        .log-entry {
+            padding: 0.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .log-time {
+            color: #4cc9f0;
+            font-family: monospace;
+            min-width: 80px;
+        }
+        
+        .log-message {
+            flex: 1;
+        }
+        
+        /* الإحصائيات الحية */
+        .live-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            border-top: 4px solid var(--primary);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #fff;
+            margin: 1rem 0;
+        }
+        
+        .stat-label {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* التنبيهات */
+        .alerts-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 350px;
+            z-index: 1001;
+        }
+        
+        .alert {
+            background: rgba(43, 45, 66, 0.95);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: slideIn 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .alert-success { border-color: #28a745; }
+        .alert-warning { border-color: #ffc107; }
+        .alert-error { border-color: #dc3545; }
+        .alert-info { border-color: #17a2b8; }
+        
+        /* التبويبات */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1rem;
+        }
+        
+        .tab {
+            padding: 0.8rem 1.5rem;
+            background: none;
+            border: none;
+            color: #aaa;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .tab:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            background: rgba(67, 97, 238, 0.1);
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* تفاصيل المصنع */
+        .factory-detail {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .detail-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        .detail-label {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .detail-value {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        /* تخصيص شريط التمرير */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
+        }
+        
+        /* تصميم متجاوب */
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .navbar { flex-direction: column; gap: 1rem; }
+            .nav-links { flex-wrap: wrap; justify-content: center; }
+            .control-cards, .factories-list { grid-template-columns: 1fr; }
+            .table-header, .table-row { grid-template-columns: 1fr; }
+            .alerts-container { width: calc(100% - 2rem); }
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-industry fa-2x" style="color: #4cc9f0;"></i>
+            <h1>نظام تحكم المصانع الذكية</h1>
+        </div>
+        <div class="nav-links">
+            <a href="#dashboard" class="nav-link active" onclick="showTab('dashboard')">
+                <i class="fas fa-tachometer-alt"></i>لوحة التحكم
+            </a>
+            <a href="#factories" class="nav-link" onclick="showTab('factories')">
+                <i class="fas fa-industry"></i>المصانع
+            </a>
+            <a href="#production" class="nav-link" onclick="showTab('production')">
+                <i class="fas fa-cogs"></i>الإنتاج
+            </a>
+            <a href="#quality" class="nav-link" onclick="showTab('quality')">
+                <i class="fas fa-flask"></i>الجودة
+            </a>
+            <a href="#monitoring" class="nav-link" onclick="showTab('monitoring')">
+                <i class="fas fa-chart-line"></i>المراقبة
+            </a>
+        </div>
+    </nav>
+    
+    <!-- المحتوى الرئيسي -->
+    <div class="container">
+        <!-- تبويبات المحتوى -->
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('dashboard')">لوحة التحكم</button>
+            <button class="tab" onclick="showTab('factories')">المصانع</button>
+            <button class="tab" onclick="showTab('production')">طلبات الإنتاج</button>
+            <button class="tab" onclick="showTab('scheduling')">جدولة المصانع</button>
+            <button class="tab" onclick="showTab('quality')">اختبارات الجودة</button>
+            <button class="tab" onclick="showTab('monitoring')">المراقبة الحية</button>
+        </div>
+        
+        <!-- محتوى التبويب: لوحة التحكم -->
+        <div id="dashboard" class="tab-content active">
+            <div class="dashboard-header">
+                <h2><i class="fas fa-tachometer-alt"></i> لوحة التحكم الرئيسية</h2>
+                <p>نظرة عامة على أداء المصانع وعمليات الإنتاج</p>
+            </div>
+            
+            <!-- الإحصائيات الحية -->
+            <div class="live-stats" id="liveStats">
+                <!-- سيتم ملؤها بالجافاسكريبت -->
+            </div>
+            
+            <!-- بطاقات التحكم السريع -->
+            <div class="control-cards">
+                <div class="control-card">
+                    <div class="card-header">
+                        <i class="fas fa-plus-circle"></i>
+                        <h3>إنشاء طلب إنتاج جديد</h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">نوع المنتج</label>
+                        <select class="form-control" id="productType">
+                            <option value="educational_content">محتوى تعليمي</option>
+                            <option value="creative_design">تصميم إبداعي</option>
+                            <option value="software_solution">حل برمجي</option>
+                            <option value="business_report">تقرير أعمال</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">الكمية</label>
+                        <input type="number" class="form-control" id="quantity" min="1" max="1000" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">الأولوية</label>
+                        <select class="form-control" id="priority">
+                            <option value="low">منخفضة</option>
+                            <option value="medium" selected>متوسطة</option>
+                            <option value="high">عالية</option>
+                            <option value="urgent">عاجلة</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary btn-block" onclick="createProductionRequest()">
+                        <i class="fas fa-paper-plane"></i>إنشاء طلب إنتاج
+                    </button>
+                </div>
+                
+                <div class="control-card">
+                    <div class="card-header">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h3>جدولة مصنع</h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">اختر المصنع</label>
+                        <select class="form-control" id="scheduleFactory">
+                            <!-- سيتم ملؤها بالجافاسكريبت -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">وقت البدء</label>
+                        <input type="datetime-local" class="form-control" id="startTime">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">المدة (ساعات)</label>
+                        <input type="number" class="form-control" id="duration" min="1" max="24" value="8">
+                    </div>
+                    <button class="btn btn-success btn-block" onclick="createSchedule()">
+                        <i class="fas fa-clock"></i>جدولة المصنع
+                    </button>
+                </div>
+                
+                <div class="control-card">
+                    <div class="card-header">
+                        <i class="fas fa-flask"></i>
+                        <h3>اختبار جودة سريع</h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">اختر المصنع</label>
+                        <select class="form-control" id="testFactory">
+                            <!-- سيتم ملؤها بالجافاسكريبت -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">نوع الاختبار</label>
+                        <select class="form-control" id="testType">
+                            <option value="standard">قياسي</option>
+                            <option value="comprehensive">شامل</option>
+                            <option value="safety">سلامة</option>
+                            <option value="performance">أداء</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-warning btn-block" onclick="runQualityTest()">
+                        <i class="fas fa-vial"></i>بدء اختبار الجودة
+                    </button>
+                </div>
+            </div>
+            
+            <!-- قائمة المصانع -->
+            <div class="factories-list" id="factoriesList">
+                <!-- سيتم ملؤها بالجافاسكريبت -->
+            </div>
+        </div>
+        
+        <!-- محتوى التبويب: المصانع -->
+        <div id="factories" class="tab-content">
+            <div class="dashboard-header">
+                <h2><i class="fas fa-industry"></i> إدارة المصانع</h2>
+                <p>التحكم في المصانع وعرض التفاصيل</p>
+            </div>
+            <div id="factoriesDetailView"></div>
+        </div>
+        
+        <!-- محتوى التبويب: طلبات الإنتاج -->
+        <div id="production" class="tab-content">
+            <div class="dashboard-header">
+                <h2><i class="fas fa-cogs"></i> طلبات الإنتاج</h2>
+                <p>إدارة وتتبع طلبات الإنتاج</p>
+            </div>
+            <div class="requests-table">
+                <div class="table-header">
+                    <div>رقم الطلب</div>
+                    <div>نوع المنتج</div>
+                    <div>الكمية</div>
+                    <div>الأولوية</div>
+                    <div>الحالة</div>
+                    <div>الإجراءات</div>
+                </div>
+                <div id="productionRequests">
+                    <!-- سيتم ملؤها بالجافاسكريبت -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- محتوى التبويب: المراقبة -->
+        <div id="monitoring" class="tab-content">
+            <div class="dashboard-header">
+                <h2><i class="fas fa-chart-line"></i> المراقبة الحية</h2>
+                <p>متابعة أداء المصانع في الوقت الحقيقي</p>
+            </div>
+            <div class="log-container" id="liveLog">
+                <!-- سجل التشغيل -->
+            </div>
+        </div>
+        
+        <!-- محتوى التبويب: الجودة -->
+        <div id="quality" class="tab-content">
+            <div class="dashboard-header">
+                <h2><i class="fas fa-flask"></i> اختبارات الجودة</h2>
+                <p>نتائج اختبارات الجودة والتقارير</p>
+            </div>
+            <div id="qualityTests"></div>
+        </div>
+        
+        <!-- محتوى التبويب: الجدولة -->
+        <div id="scheduling" class="tab-content">
+            <div class="dashboard-header">
+                <h2><i class="fas fa-calendar-alt"></i> جدولة المصانع</h2>
+                <p>إدارة جداول تشغيل المصانع</p>
+            </div>
+            <div id="schedulesList"></div>
+        </div>
+    </div>
+    
+    <!-- منطقة التنبيهات -->
+    <div class="alerts-container" id="alertsContainer"></div>
+    
+    <!-- النصوص الأساسية للجافاسكريبت -->
+    <script>
+        // التكوين
+        const API_BASE = window.location.origin;
+        let factories = [];
+        let productionRequests = [];
+        
+        // ========== دوال المساعدة ==========
+        
+        // تسجيل الأحداث
+        function log(message, type = 'info') {
+            const logEl = document.getElementById('liveLog');
+            const now = new Date();
+            const time = now.toLocaleTimeString('ar-EG');
+            
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            logEntry.innerHTML = `
+                <span class="log-time">${time}</span>
+                <span class="log-message">${message}</span>
+            `;
+            
+            logEl.prepend(logEntry);
+            
+            // حفظ فقط آخر 50 سجل
+            const entries = logEl.querySelectorAll('.log-entry');
+            if (entries.length > 50) {
+                entries[entries.length - 1].remove();
+            }
+            
+            // عرض تنبيه للأنواع المهمة
+            if (type === 'success' || type === 'error') {
+                showAlert(message, type);
+            }
+        }
+        
+        // عرض تنبيه
+        function showAlert(message, type = 'info') {
+            const alertsContainer = document.getElementById('alertsContainer');
+            const alertTypes = {
+                'success': { icon: '✅', class: 'alert-success' },
+                'error': { icon: '❌', class: 'alert-error' },
+                'warning': { icon: '⚠️', class: 'alert-warning' },
+                'info': { icon: 'ℹ️', class: 'alert-info' }
+            };
+            
+            const alertConfig = alertTypes[type] || alertTypes.info;
+            
+            const alert = document.createElement('div');
+            alert.className = `alert ${alertConfig.class}`;
+            alert.innerHTML = `
+                <span style="font-size: 1.2rem;">${alertConfig.icon}</span>
+                <span>${message}</span>
+            `;
+            
+            alertsContainer.prepend(alert);
+            
+            // إزالة التنبيه بعد 5 ثوانٍ
+            setTimeout(() => {
+                alert.style.opacity = '0';
+                alert.style.transform = 'translateX(100%)';
+                setTimeout(() => alert.remove(), 300);
+            }, 5000);
+        }
+        
+        // تبديل التبويبات
+        function showTab(tabId) {
+            // إخفاء جميع المحتويات
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // إزالة النشاط من جميع التبويبات
+            document.querySelectorAll('.tab').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // إضافة النشاط للتبويب والمحتوى المختار
+            document.getElementById(tabId).classList.add('active');
+            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+            
+            // تحديث المحتوى بناءً على التبويب
+            switch(tabId) {
+                case 'factories':
+                    loadFactoriesDetail();
+                    break;
+                case 'production':
+                    loadProductionRequests();
+                    break;
+                case 'quality':
+                    loadQualityTests();
+                    break;
+                case 'scheduling':
+                    loadSchedules();
+                    break;
+                case 'monitoring':
+                    loadLiveMetrics();
+                    break;
+            }
+        }
+        
+        // ========== دوال تحميل البيانات ==========
+        
+        // تحميل المصانع
+        async function loadFactories() {
+            try {
+                const response = await fetch(`${API_BASE}/api/factories`);
+                factories = await response.json();
+                renderFactories();
+                populateFactoryDropdowns();
+                log('✅ تم تحميل بيانات المصانع', 'success');
+            } catch (error) {
+                log(`❌ خطأ في تحميل المصانع: ${error.message}`, 'error');
+            }
+        }
+        
+        // عرض المصانع
+        function renderFactories() {
+            const container = document.getElementById('factoriesList');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            factories.forEach(factory => {
+                const factoryEl = document.createElement('div');
+                factoryEl.className = 'factory-item';
+                factoryEl.innerHTML = `
+                    <div class="factory-header">
+                        <div class="factory-icon">
+                            ${getFactoryIcon(factory.type)}
+                        </div>
+                        <div class="factory-info">
+                            <h4>${factory.name}</h4>
+                            <span class="factory-status status-${factory.status}">
+                                ${getStatusText(factory.status)}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="factory-metrics">
+                        <div class="metric">
+                            <div class="metric-value">${factory.metrics?.efficiency || 0}%</div>
+                            <div class="metric-label">الكفاءة</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">${factory.current_load || 0}%</div>
+                            <div class="metric-label">الحمل</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">${factory.capacity || 0}</div>
+                            <div class="metric-label">السعة</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">${factory.metrics?.quality_score || 0}</div>
+                            <div class="metric-label">الجودة</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                        <button class="btn btn-primary" onclick="startFactory('${factory.id}')">
+                            <i class="fas fa-play"></i>تشغيل
+                        </button>
+                        <button class="btn" style="background: rgba(255,255,255,0.1);" onclick="showFactoryDetails('${factory.id}')">
+                            <i class="fas fa-info-circle"></i>تفاصيل
+                        </button>
+                    </div>
+                `;
+                container.appendChild(factoryEl);
+            });
+        }
+        
+        // تحميل تفاصيل المصانع
+        async function loadFactoriesDetail() {
+            const container = document.getElementById('factoriesDetailView');
+            container.innerHTML = '<p>جاري تحميل تفاصيل المصانع...</p>';
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/factories`);
+                const factories = await response.json();
+                
+                let html = '';
+                factories.forEach(factory => {
+                    html += `
+                        <div class="factory-detail">
+                            <h3>${factory.name}</h3>
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <div class="detail-label">الحالة</div>
+                                    <div class="detail-value">${getStatusText(factory.status)}</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">الكفاءة</div>
+                                    <div class="detail-value">${factory.metrics?.efficiency || 0}%</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">معدل الإنتاج</div>
+                                    <div class="detail-value">${factory.metrics?.production_rate || 0}/ساعة</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">آخر صيانة</div>
+                                    <div class="detail-value">${factory.last_maintenance || 'غير معروف'}</div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                                <button class="btn btn-primary" onclick="startFactory('${factory.id}')">
+                                    <i class="fas fa-play"></i>تشغيل
+                                </button>
+                                <button class="btn" style="background: rgba(255,255,255,0.1);" onclick="stopFactory('${factory.id}')">
+                                    <i class="fas fa-stop"></i>إيقاف
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = html;
+                log('✅ تم تحميل تفاصيل المصانع', 'success');
+            } catch (error) {
+                container.innerHTML = `<p style="color: #f72585;">❌ خطأ في تحميل التفاصيل: ${error.message}</p>`;
+            }
+        }
+        
+        // تحميل طلبات الإنتاج
+        async function loadProductionRequests() {
+            try {
+                const response = await fetch(`${API_BASE}/api/production/requests`);
+                productionRequests = await response.json();
+                renderProductionRequests();
+                log('✅ تم تحميل طلبات الإنتاج', 'success');
+            } catch (error) {
+                log(`❌ خطأ في تحميل الطلبات: ${error.message}`, 'error');
+            }
+        }
+        
+        // عرض طلبات الإنتاج
+        function renderProductionRequests() {
+            const container = document.getElementById('productionRequests');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            productionRequests.forEach(request => {
+                const row = document.createElement('div');
+                row.className = 'table-row';
+                row.innerHTML = `
+                    <div>#${request.id}</div>
+                    <div>${request.product_type}</div>
+                    <div>${request.quantity}</div>
+                    <div>${getPriorityText(request.priority)}</div>
+                    <div>
+                        <span class="request-status status-${request.status}">
+                            ${getRequestStatusText(request.status)}
+                        </span>
+                    </div>
+                    <div>
+                        <button class="btn" style="padding: 0.3rem 0.6rem; font-size: 0.9rem;" 
+                                onclick="approveRequest('${request.id}')" ${request.status !== 'pending' ? 'disabled' : ''}>
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button class="btn" style="padding: 0.3rem 0.6rem; font-size: 0.9rem; background: rgba(220, 53, 69, 0.2);" 
+                                onclick="deleteRequest('${request.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+        
+        // تحميل المقاييس الحية
+        async function loadLiveMetrics() {
+            try {
+                const response = await fetch(`${API_BASE}/api/metrics`);
+                const metrics = await response.json();
+                renderLiveMetrics(metrics);
+            } catch (error) {
+                console.error('Error loading metrics:', error);
+            }
+        }
+        
+        // عرض المقاييس الحية
+        function renderLiveMetrics(metrics) {
+            const container = document.getElementById('liveStats');
+            if (!container) return;
+            
+            container.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-label">المصانع النشطة</div>
+                    <div class="stat-value">${metrics.active_factories}/${metrics.total_factories}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">طلبات الانتظار</div>
+                    <div class="stat-value">${metrics.pending_requests}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">متوسط الكفاءة</div>
+                    <div class="stat-value">${metrics.avg_efficiency}%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">مطابقة الجودة</div>
+                    <div class="stat-value">${metrics.quality_compliance}%</div>
+                </div>
+            `;
+        }
+        
+        // ========== دوال التحكم ==========
+        
+        // إنشاء طلب إنتاج
+        async function createProductionRequest() {
+            const productType = document.getElementById('productType').value;
+            const quantity = document.getElementById('quantity').value;
+            const priority = document.getElementById('priority').value;
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/production/create`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        factory_id: 'factory_1',
+                        product_type: productType,
+                        quantity: parseInt(quantity),
+                        priority: priority,
+                        user: 'مدير النظام'
+                    })
+                });
+                
+                const result = await response.json();
+                showAlert(result.message, 'success');
+                log(result.message, 'success');
+                
+                // تحديث القائمة
+                loadProductionRequests();
+                
+            } catch (error) {
+                showAlert(`❌ خطأ في إنشاء الطلب: ${error.message}`, 'error');
+                log(`❌ خطأ في إنشاء الطلب: ${error.message}`, 'error');
+            }
+        }
+        
+        // تشغيل مصنع
+        async function startFactory(factoryId) {
+            try {
+                const response = await fetch(`${API_BASE}/api/factory/start`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ factory_id: factoryId })
+                });
+                
+                const result = await response.json();
+                showAlert(result.message, 'success');
+                log(result.message, 'success');
+                
+                // تحديث القائمة
+                loadFactories();
+                
+            } catch (error) {
+                showAlert(`❌ خطأ في تشغيل المصنع: ${error.message}`, 'error');
+            }
+        }
+        
+        // إيقاف مصنع
+        async function stopFactory(factoryId) {
+            try {
+                const response = await fetch(`${API_BASE}/api/factory/stop`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        factory_id: factoryId,
+                        reason: 'إيقاف يدوي'
+                    })
+                });
+                
+                const result = await response.json();
+                showAlert(result.message, 'success');
+                log(result.message, 'success');
+                
+                // تحديث القائمة
+                loadFactories();
+                
+            } catch (error) {
+                showAlert(`❌ خطأ في إيقاف المصنع: ${error.message}`, 'error');
+            }
+        }
+        
+        // اعتماد طلب
+        async function approveRequest(requestId) {
+            try {
+                const response = await fetch(`${API_BASE}/api/production/approve`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        request_id: requestId,
+                        approver: 'مدير الجودة'
+                    })
+                });
+                
+                const result = await response.json();
+                showAlert(result.message, 'success');
+                log(result.message, 'success');
+                
+                // تحديث القائمة
+                loadProductionRequests();
+                
+            } catch (error) {
+                showAlert(`❌ خطأ في اعتماد الطلب: ${error.message}`, 'error');
+            }
+        }
+        
+        // حذف طلب
+        async function deleteRequest(requestId) {
+            if (!confirm('هل أنت متأكد من حذف هذا الطلب؟')) return;
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/production/request/${requestId}`, {
+                    method: 'DELETE'
+                });
+                
+                const result = await response.json();
+                showAlert(result.message, 'success');
+                log(result.message, 'success');
+                
+                // تحديث القائمة
+                loadProductionRequests();
+                
+            } catch (error) {
+                showAlert(`❌ خطأ في حذف الطلب: ${error.message}`, 'error');
+            }
+        }
+        
+        // إنشاء جدولة
+        async function createSchedule() {
+            const factoryId = document.getElementById('scheduleFactory').value;
+            const startTime = document.getElementById('startTime').value;
+            const duration = document.getElementById('duration').value;
+            
+            if (!startTime) {
+                showAlert('⚠️ الرجاء تحديد وقت البدء', 'warning');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/schedule/create`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        factory_id: factoryId,
+                        start_time: startTime,
+                        end_time: new Date(new Date(startTime).getTime() + duration * 60 * 60 * 1000).toISOString(),
+                        shift_type: 'normal'
+                    })
+                });
+                
+                const result = await response.json();
+                showAlert(result.message, 'success');
+                log(result.message, 'success');
+                
+            } catch (error) {
+                showAlert(`❌ خطأ في الجدولة: ${error.message}`, 'error');
+            }
+        }
+        
+        // اختبار جودة
+        async function runQualityTest() {
+            const factoryId = document.getElementById('testFactory').value;
+            const testType = document.getElementById('testType').value;
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/quality/test`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        factory_id: factoryId,
+                        test_type: testType,
+                        tester: 'نظام التحكم الآلي'
+                    })
+                });
+                
+                const result = await response.json();
+                showAlert(result.message, 'success');
+                log(result.message, 'success');
+                
+                // عرض النتائج
+                alert(`نتائج اختبار الجودة:\n\nالنتيجة العامة: ${result.results.overall_score}%\nالحالة: ${result.results.status === 'passed' ? '✅ مقبول' : '❌ مرفوض'}`);
+                
+            } catch (error) {
+                showAlert(`❌ خطأ في اختبار الجودة: ${error.message}`, 'error');
+            }
+        }
+        
+        // ========== دوال المساعدة ==========
+        
+        // ملء القوائم المنسدلة بالمصانع
+        function populateFactoryDropdowns() {
+            const scheduleSelect = document.getElementById('scheduleFactory');
+            const testSelect = document.getElementById('testFactory');
+            
+            if (scheduleSelect && testSelect) {
+                scheduleSelect.innerHTML = '';
+                testSelect.innerHTML = '';
+                
+                factories.forEach(factory => {
+                    const option = `<option value="${factory.id}">${factory.name}</option>`;
+                    scheduleSelect.innerHTML += option;
+                    testSelect.innerHTML += option;
+                });
+            }
+        }
+        
+        // الحصول على أيقونة المصنع
+        function getFactoryIcon(type) {
+            const icons = {
+                'education': '🎓',
+                'creative': '🎨',
+                'technology': '💻',
+                'corporate': '📊'
+            };
+            return icons[type] || '🏭';
+        }
+        
+        // ترجمة حالة المصنع
+        function getStatusText(status) {
+            const statusMap = {
+                'running': '🟢 نشط',
+                'idle': '🟡 خامل',
+                'maintenance': '🟠 صيانة',
+                'error': '🔴 خطأ'
+            };
+            return statusMap[status] || status;
+        }
+        
+        // ترجمة حالة الطلب
+        function getRequestStatusText(status) {
+            const statusMap = {
+                'pending': '⏳ في الانتظار',
+                'approved': '✅ معتمد',
+                'in_progress': '🔄 قيد التنفيذ',
+                'completed': '🏁 مكتمل',
+                'cancelled': '❌ ملغي'
+            };
+            return statusMap[status] || status;
+        }
+        
+        // ترجمة الأولوية
+        function getPriorityText(priority) {
+            const priorityMap = {
+                'low': '⬇️ منخفضة',
+                'medium': '⏺️ متوسطة',
+                'high': '⬆️ عالية',
+                'urgent': '🚨 عاجلة'
+            };
+            return priorityMap[priority] || priority;
+        }
+        
+        // عرض تفاصيل المصنع
+        async function showFactoryDetails(factoryId) {
+            try {
+                const response = await fetch(`${API_BASE}/api/factory/${factoryId}`);
+                const factory = await response.json();
+                
+                let details = `🏭 ${factory.name}\n\n`;
+                details += `📋 النوع: ${factory.type}\n`;
+                details += `📊 الحالة: ${getStatusText(factory.status)}\n`;
+                details += `🎯 الكفاءة: ${factory.metrics?.efficiency || 0}%\n`;
+                details += `📈 معدل الإنتاج: ${factory.metrics?.production_rate || 0}/ساعة\n`;
+                details += `📅 آخر صيانة: ${factory.last_maintenance || 'غير معروف'}\n`;
+                details += `📅 الصيانة القادمة: ${factory.next_maintenance || 'غير مجدول'}\n`;
+                
+                alert(details);
+                log(`📄 عرض تفاصيل المصنع ${factory.name}`, 'info');
+                
+            } catch (error) {
+                showAlert(`❌ خطأ في تحميل التفاصيل: ${error.message}`, 'error');
+            }
+        }
+        
+        // دوال تحميل إضافية
+        async function loadQualityTests() {
+            try {
+                const response = await fetch(`${API_BASE}/api/quality/tests`);
+                const tests = await response.json();
+                renderQualityTests(tests);
+                log('✅ تم تحميل اختبارات الجودة', 'success');
+            } catch (error) {
+                log(`❌ خطأ في تحميل الاختبارات: ${error.message}`, 'error');
+            }
+        }
+        
+        async function loadSchedules() {
+            try {
+                const response = await fetch(`${API_BASE}/api/schedules`);
+                const schedules = await response.json();
+                renderSchedules(schedules);
+                log('✅ تم تحميل الجداول', 'success');
+            } catch (error) {
+                log(`❌ خطأ في تحميل الجداول: ${error.message}`, 'error');
+            }
+        }
+        
+        // ========== التهيئة ==========
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            log('🚀 بدء تحميل نظام التحكم المتقدم...', 'info');
+            
+            // تحميل البيانات الأولية
+            loadFactories();
+            loadProductionRequests();
+            loadLiveMetrics();
+            
+            // تحديث المقاييس كل 30 ثانية
+            setInterval(loadLiveMetrics, 30000);
+            
+            // تحديث المصانع كل دقيقة
+            setInterval(loadFactories, 60000);
+            
+            // تعيين الوقت الحالي في حقل الجدولة
+            const now = new Date();
+            const startTime = document.getElementById('startTime');
+            if (startTime) {
+                startTime.value = now.toISOString().slice(0, 16);
+            }
+            
+            log('✅ تم تهيئة نظام التحكم بنجاح', 'success');
+            showAlert('🏭 نظام التحكم المتقدم جاهز للعمل!', 'success');
+        });
+    </script>
+</body>
+</html>

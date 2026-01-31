@@ -1,53 +1,53 @@
-# Rust
+# ملفات Rust
 /target/
 **/*.rs.bk
-Cargo.lock
+Cargo.lock.backup
 
-# OS
+# ملفات Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+env.bak/
+venv.bak/
+
+# ملفات النظام
+*.log
+*.sqlite
+*.db
+factories.db
+test_build
+build_errors.log
+
+# ملفات التطوير
 .DS_Store
-Thumbs.db
-
-# IDE
-.vscode/
 .idea/
+.vscode/
 *.swp
 *.swo
 
-# Logs
-*.log
-logs/
+# ملفات المنتجات (سنضيف بعضها فقط)
+products/education/*.md
+products/education/*.txt
+products/creative/*.json
+products/creative/*.txt
+products/corporate/*.md
+products/corporate/*.txt
+products/technology/*.txt
+products/technology/*.txt
 
-# Temporary files
-*.tmp
-*.temp
+# استثناء: ملفات README في المنتجات
+!products/*/README.txt
 
-# Environment variables
-.env
-.env.local
+# ملفات التصدير
+exports/*.zip
 
-# Build artifacts
-dist/
-build/
+# مجلد التنزيلات
+downloads/
 
-# Documentation
-_site/
-_site*/
-
-# Testing
-coverage/
-
-# Backup files
-*.bak
-*.backup
-
-# macOS
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Linux
-*~
-
-# Windows
-Desktop.ini
-Thumbs.db
+# ملفات Termux
+$HOME/

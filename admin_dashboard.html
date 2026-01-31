@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marwan Hub Factories v3.0.0 - لوحة الإدارة المتقدمة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: var(--light);
+            min-height: 100vh;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: rgba(26, 26, 46, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .header h1 {
+            color: #4cc9f0;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header .subtitle {
+            color: #b0b0ff;
+            font-size: 1.1rem;
+        }
+        
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: var(--primary);
+        }
+        
+        .stat-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--success);
+        }
+        
+        .stat-card .value {
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+        
+        .stat-card .label {
+            color: #b0b0ff;
+            font-size: 0.9rem;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+        
+        .sidebar {
+            background: rgba(26, 26, 46, 0.9);
+            border-radius: 15px;
+            padding: 1.5rem;
+            height: fit-content;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-menu {
+            list-style: none;
+        }
+        
+        .nav-menu li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            color: var(--light);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        .nav-menu a:hover, .nav-menu a.active {
+            background: rgba(67, 97, 238, 0.2);
+            color: var(--success);
+        }
+        
+        .nav-menu i {
+            margin-left: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .content-area {
+            background: rgba(26, 26, 46, 0.9);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-title {
+            color: var(--success);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(76, 201, 240, 0.3);
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .card-title {
+            color: var(--success);
+            font-size: 1.2rem;
+        }
+        
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        
+        .status-ready { background: rgba(76, 201, 240, 0.2); color: #4cc9f0; }
+        .status-active { background: rgba(67, 97, 238, 0.2); color: #4361ee; }
+        .status-warning { background: rgba(247, 37, 133, 0.2); color: #f72585; }
+        
+        .table-container {
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 1rem;
+            text-align: right;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        th {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            margin: 0.3rem;
+        }
+        
+        .btn i {
+            margin-left: 8px;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: rgba(76, 201, 240, 0.2);
+            color: var(--success);
+            border: 1px solid rgba(76, 201, 240, 0.3);
+        }
+        
+        .btn-success:hover {
+            background: rgba(76, 201, 240, 0.3);
+        }
+        
+        .btn-warning {
+            background: rgba(247, 37, 133, 0.2);
+            color: var(--warning);
+            border: 1px solid rgba(247, 37, 133, 0.3);
+        }
+        
+        .btn-warning:hover {
+            background: rgba(247, 37, 133, 0.3);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--success);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--light);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            background: rgba(26, 26, 46, 0.95);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .login-title {
+            text-align: center;
+            color: var(--success);
+            margin-bottom: 2rem;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .alert-success {
+            background: rgba(76, 201, 240, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(76, 201, 240, 0.3);
+        }
+        
+        .alert-error {
+            background: rgba(247, 37, 133, 0.1);
+            color: var(--warning);
+            border: 1px solid rgba(247, 37, 133, 0.3);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="login-page" class="login-container">
+        <h1 class="login-title"><i class="fas fa-robot"></i> Marwan Hub Factories</h1>
+        <div id="login-alert" class="alert"></div>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="username"><i class="fas fa-user"></i> اسم المستخدم</label>
+                <input type="text" id="username" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="password"><i class="fas fa-lock"></i> كلمة المرور</label>
+                <input type="password" id="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+            </button>
+        </form>
+        <div style="text-align: center; margin-top: 1rem; color: #b0b0ff;">
+            <small>استخدم: admin/admin123 أو user/user123</small>
+        </div>
+    </div>
+    
+    <div id="dashboard" class="container" style="display: none;">
+        <div class="header">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1><i class="fas fa-industry"></i> Marwan Hub Factories v3.0.0</h1>
+                    <div class="subtitle">لوحة الإدارة المتقدمة - نظام إدارة المصانع الذكية</div>
+                </div>
+                <div class="user-info">
+                    <div class="avatar" id="user-avatar">M</div>
+                    <div>
+                        <div id="user-name">مروان</div>
+                        <div id="user-role" style="font-size: 0.9rem; color: #b0b0ff;">مسؤول</div>
+                    </div>
+                    <button class="btn btn-warning" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats-bar">
+            <div class="stat-card">
+                <i class="fas fa-industry"></i>
+                <div class="value" id="factories-count">4</div>
+                <div class="label">المصانع النشطة</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-box"></i>
+                <div class="value" id="products-count">0</div>
+                <div class="label">المنتجات</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-download"></i>
+                <div class="value" id="exports-count">0</div>
+                <div class="label">الصادرات</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <div class="value" id="users-count">2</div>
+                <div class="label">المستخدمين</div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="sidebar">
+                <ul class="nav-menu">
+                    <li><a href="#" class="active" onclick="showSection('overview')">
+                        <i class="fas fa-home"></i> نظرة عامة
+                    </a></li>
+                    <li><a href="#" onclick="showSection('factories')">
+                        <i class="fas fa-industry"></i> إدارة المصانع
+                    </a></li>
+                    <li><a href="#" onclick="showSection('products')">
+                        <i class="fas fa-box"></i> المنتجات
+                    </a></li>
+                    <li><a href="#" onclick="showSection('exports')">
+                        <i class="fas fa-download"></i> نظام التصدير
+                    </a></li>
+                    <li><a href="#" onclick="showSection('users')">
+                        <i class="fas fa-users"></i> إدارة المستخدمين
+                    </a></li>
+                    <li><a href="#" onclick="showSection('settings')">
+                        <i class="fas fa-cog"></i> الإعدادات
+                    </a></li>
+                    <li><a href="dashboard_live.html" target="_blank">
+                        <i class="fas fa-tachometer-alt"></i> لوحة التحكم المباشرة
+                    </a></li>
+                </ul>
+                
+                <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <div style="color: #b0b0ff; margin-bottom: 0.5rem;">روابط سريعة:</div>
+                    <a href="http://localhost:8000" target="_blank" class="btn btn-success" style="width: 100%; margin-bottom: 0.5rem;">
+                        <i class="fas fa-globe"></i> الواجهة الرئيسية
+                    </a>
+                    <a href="http://localhost:8000/api/factories" target="_blank" class="btn btn-success" style="width: 100%;">
+                        <i class="fas fa-code"></i> واجهة API
+                    </a>
+                </div>
+            </div>
+            
+            <div class="content-area">
+                <div id="overview" class="section active">
+                    <h2 class="section-title"><i class="fas fa-home"></i> نظرة عامة على النظام</h2>
+                    <div class="grid-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">حالة المصانع</div>
+                            </div>
+                            <div id="factories-status">
+                                <!-- سيتم ملؤها بالبيانات -->
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">المنتجات الحديثة</div>
+                            </div>
+                            <div id="recent-products">
+                                <!-- سيتم ملؤها بالبيانات -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">إحصائيات النظام</div>
+                        </div>
+                        <div id="system-stats">
+                            <!-- سيتم ملؤها بالبيانات -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="factories" class="section">
+                    <h2 class="section-title"><i class="fas fa-industry"></i> إدارة المصانع</h2>
+                    <div class="grid-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">مصنع التعليم</div>
+                                <span class="status-badge status-ready" id="edu-status">جاهز</span>
+                            </div>
+                            <p>إنتاج المحتوى التعليمي، الدورات، والمواد التدريبية</p>
+                            <button class="btn btn-primary" onclick="startFactory('education')">
+                                <i class="fas fa-play"></i> بدء الإنتاج
+                            </button>
+                            <button class="btn btn-success" onclick="exportFactory('education')">
+                                <i class="fas fa-download"></i> تصدير المنتجات
+
+                            </button>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">مصنع الإبداع</div>
+                                <span class="status-badge status-ready" id="creative-status">جاهز</span>
+                            </div>
+                            <p>إنتاج التصاميم، الشعارات، والمحتوى الإبداعي</p>
+                            <button class="btn btn-primary" onclick="startFactory('creative')">
+                                <i class="fas fa-play"></i> بدء الإنتاج
+                            </button>
+                            <button class="btn btn-success" onclick="exportFactory('creative')">
+                                <i class="fas fa-download"></i> تصدير المنتجات
+                            </button>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">مصنع الشركات</div>
+                                <span class="status-badge status-ready" id="corp-status">جاهز</span>
+                            </div>
+                            <p>إنتاج التقارير، العروض، والمستندات المؤسسية</p>
+                            <button class="btn btn-primary" onclick="startFactory('corporate')">
+                                <i class="fas fa-play"></i> بدء الإنتاج
+                            </button>
+                            <button class="btn btn-success" onclick="exportFactory('corporate')">
+                                <i class="fas fa-download"></i> تصدير المنتجات
+                            </button>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">مصنع التقنية</div>
+                                <span class="status-badge status-ready" id="tech-status">جاهز</span>
+                            </div>
+                            <p>إنتاج الكود، المكتبات، والمكونات التقنية</p>
+                            <button class="btn btn-primary" onclick="startFactory('technology')">
+                                <i class="fas fa-play"></i> بدء الإنتاج
+                            </button>
+                            <button class="btn btn-success" onclick="exportFactory('technology')">
+                                <i class="fas fa-download"></i> تصدير المنتجات
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="products" class="section">
+                    <h2 class="section-title"><i class="fas fa-box"></i> إدارة المنتجات</h2>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">جميع المنتجات</div>
+                            <button class="btn btn-primary" onclick="refreshProducts()">
+                                <i class="fas fa-sync"></i> تحديث القائمة
+                            </button>
+                        </div>
+                        <div class="table-container">
+                            <table id="products-table">
+                                <thead>
+                                    <tr>
+                                        <th>المصنع</th>
+                                        <th>اسم المنتج</th>
+                                        <th>النوع</th>
+                                        <th>الحجم</th>
+                                        <th>التاريخ</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- سيتم ملؤها بالبيانات -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="exports" class="section">
+                    <h2 class="section-title"><i class="fas fa-download"></i> نظام التصدير</h2>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">الملفات المصدرة</div>
+                            <button class="btn btn-primary" onclick="refreshExports()">
+                                <i class="fas fa-sync"></i> تحديث القائمة
+                            </button>
+                        </div>
+                        <div class="table-container">
+                            <table id="exports-table">
+                                <thead>
+                                    <tr>
+                                        <th>اسم الملف</th>
+                                        <th>المصنع</th>
+                                        <th>الحجم</th>
+                                        <th>التاريخ</th>
+                                        <th>التنزيلات</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- سيتم ملؤها بالبيانات -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="users" class="section">
+                    <h2 class="section-title"><i class="fas fa-users"></i> إدارة المستخدمين</h2>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">المستخدمين المسجلين</div>
+                            <button class="btn btn-primary" onclick="showAddUserModal()">
+                                <i class="fas fa-user-plus"></i> إضافة مستخدم
+                            </button>
+                        </div>
+                        <div class="table-container">
+                            <table id="users-table">
+                                <thead>
+                                    <tr>
+                                        <th>اسم المستخدم</th>
+                                        <th>البريد الإلكتروني</th>
+                                        <th>الدور</th>
+                                        <th>تاريخ التسجيل</th>
+                                        <th>الحالة</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- سيتم ملؤها بالبيانات -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="settings" class="section">
+                    <h2 class="section-title"><i class="fas fa-cog"></i> إعدادات النظام</h2>
+                    <div class="grid-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">إعدادات النظام</div>
+                            </div>
+                            <form id="system-settings">
+                                <div class="form-group">
+                                    <label>اسم النظام</label>
+                                    <input type="text" class="form-control" value="Marwan Hub Factories v3.0.0">
+                                </div>
+                                <div class="form-group">
+                                    <label>المنفذ الرئيسي</label>
+                                    <input type="number" class="form-control" value="8000">
+                                </div>
+                                <div class="form-group">
+                                    <label>وقت المهلة (ثواني)</label>
+                                    <input type="number" class="form-control" value="30">
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> حفظ الإعدادات
+                                </button>
+                            </form>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">عمليات النظام</div>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <button class="btn btn-success" onclick="backupDatabase()">
+                                    <i class="fas fa-database"></i> نسخ قاعدة البيانات احتياطياً
+                                </button>
+                                <button class="btn btn-warning" onclick="clearExports()">
+                                    <i class="fas fa-trash"></i> مسح الملفات المصدرة
+                                </button>
+                                <button class="btn btn-warning" onclick="clearProducts()">
+                                    <i class="fas fa-trash-alt"></i> مسح جميع المنتجات
+                                </button>
+                                <button class="btn btn-primary" onclick="restartSystem()">
+                                    <i class="fas fa-redo"></i> إعادة تشغيل النظام
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentUser = null;
+        let sessionToken = null;
+        
+        // مصادقة المستخدم
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentUser = data.user;
+                    sessionToken = data.session_token;
+                    
+                    // تحديث واجهة المستخدم
+                    document.getElementById('user-name').textContent = currentUser.username;
+                    document.getElementById('user-role').textContent = currentUser.role === 'admin' ? 'مسؤول' : 'مستخدم';
+                    document.getElementById('user-avatar').textContent = currentUser.username.charAt(0).toUpperCase();
+                    
+                    // إظهار لوحة التحكم
+                    document.getElementById('login-page').style.display = 'none';
+                    document.getElementById('dashboard').style.display = 'block';
+                    
+                    // تحميل البيانات الأولية
+                    loadInitialData();
+                    
+                    showAlert('تم تسجيل الدخول بنجاح!', 'success');
+                } else {
+                    showAlert(data.message, 'error');
+                }
+            } catch (error) {
+                showAlert('حدث خطأ في الاتصال بالخادم', 'error');
+                console.error('Login error:', error);
+            }
+        });
+        
+        // تسجيل الخروج
+        function logout() {
+            if (sessionToken) {
+                fetch('/api/auth/logout', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${sessionToken}`
+                    }
+                });
+            }
+            
+            currentUser = null;
+            sessionToken = null;
+            
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('login-page').style.display = 'block';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            
+            showAlert('تم تسجيل الخروج بنجاح', 'success');
+        }
+        
+        // تحميل البيانات الأولية
+        async function loadInitialData() {
+            await updateStats();
+            await updateFactories();
+            await loadProducts();
+            await loadExports();
+            await loadUsers();
+        }
+        
+        // تحديث الإحصائيات
+        async function updateStats() {
+            try {
+                // الحصول على حالة المصانع
+                const factoriesRes = await fetch('/api/factories');
+                const factoriesData = await factoriesRes.json();
+                
+                // الحصول على المنتجات
+                const productsRes = await fetch('/api/products');
+                const productsData = await productsRes.json();
+                
+                // الحصول على الصادرات
+                const exportsRes = await fetch('/api/exports');
+                const exportsData = await exportsRes.json();
+                
+                // تحديث الأرقام
+                document.getElementById('factories-count').textContent = Object.keys(factoriesData).length;
+                document.getElementById('products-count').textContent = productsData.products?.length || 0;
+                document.getElementById('exports-count').textContent = exportsData.exports?.length || 0;
+                
+                // تحديث حالة المصانع
+                updateFactoriesStatus(factoriesData);
+                updateRecentProducts(productsData.products || []);
+                updateSystemStats(factoriesData, productsData, exportsData);
+                
+            } catch (error) {
+                console.error('Error updating stats:', error);
+            }
+        }
+        
+        // تحديث حالة المصانع
+        function updateFactoriesStatus(data) {
+            const statusDiv = document.getElementById('factories-status');
+            let html = '';
+            
+            for (const [factory, info] of Object.entries(data)) {
+                const statusClass = info.status === 'ready' ? 'status-ready' : 
+                                  info.status === 'active' ? 'status-active' : 'status-warning';
+                
+                html += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 10px; background: rgba(255,255,255,0.02); border-radius: 8px;">
+                        <div>
+                            <strong style="color: #4cc9f0;">${factory}</strong>
+                            <div style="font-size: 0.9rem; color: #b0b0ff;">${info.products || 0} منتج</div>
+                        </div>
+                        <span class="status-badge ${statusClass}">${info.status}</span>
+                    </div>
+                `;
+            }
+            
+            statusDiv.innerHTML = html;
+        }
+        
+        // تحديث المنتجات الحديثة
+        function updateRecentProducts(products) {
+            const productsDiv = document.getElementById('recent-products');
+            let html = '';
+            
+            const recentProducts = products.slice(0, 5);
+            
+            recentProducts.forEach(product => {
+                const date = new Date(product.created).toLocaleDateString('ar-EG');
+                html += `
+                    <div style="margin-bottom: 10px; padding: 10px; background: rgba(255,255,255,0.02); border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <strong style="color: #4cc9f0;">${product.name}</strong>
+                            <small style="color: #b0b0ff;">${product.factory}</small>
+                        </div>
+                        <div style="font-size: 0.9rem; color: #b0b0ff;">${(product.size / 1024).toFixed(1)} KB • ${date}</div>
+                    </div>
+                `;
+            });
+            
+            productsDiv.innerHTML = html || '<div style="text-align: center; color: #b0b0ff;">لا توجد منتجات</div>';
+        }
+        
+        // تحديث إحصائيات النظام
+        function updateSystemStats(factories, products, exports) {
+            const statsDiv = document.getElementById('system-stats');
+            
+            const totalProducts = products.products?.length || 0;
+            const totalExports = exports.exports?.length || 0;
+            const totalSize = products.products?.reduce((sum, p) => sum + (p.size || 0), 0) || 0;
+            
+            statsDiv.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; color: #4cc9f0; font-weight: bold;">${totalProducts}</div>
+                        <div style="color: #b0b0ff;">إجمالي المنتجات</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; color: #4361ee; font-weight: bold;">${totalExports}</div>
+                        <div style="color: #b0b0ff;">الملفات المصدرة</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; color: #f72585; font-weight: bold;">${(totalSize / (1024*1024)).toFixed(2)}</div>
+                        <div style="color: #b0b0ff;">إجمالي الحجم (MB)</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; color: #3a0ca3; font-weight: bold;">4</div>
+                        <div style="color: #b0b0ff;">المصانع النشطة</div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // تحميل المنتجات
+        async function loadProducts() {
+            try {
+                const response = await fetch('/api/products');
+                const data = await response.json();
+                
+                const tbody = document.querySelector('#products-table tbody');
+                let html = '';
+                
+                if (data.products && data.products.length > 0) {
+                    data.products.forEach(product => {
+                        const date = new Date(product.created).toLocaleDateString('ar-EG');
+                        const sizeKB = (product.size / 1024).toFixed(1);
+                        
+                        html += `
+                            <tr>
+                                <td>${product.factory}</td>
+                                <td>${product.name}</td>
+                                <td>${product.type || 'غير محدد'}</td>
+                                <td>${sizeKB} KB</td>
+                                <td>${date}</td>
+                                <td>
+                                    <button class="btn btn-success" onclick="downloadProduct('${product.path}')">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    html = '<tr><td colspan="6" style="text-align: center; color: #b0b0ff;">لا توجد منتجات</td></tr>';
+                }
+                
+                tbody.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Error loading products:', error);
+            }
+        }
+        
+        // تحميل الصادرات
+        async function loadExports() {
+            try {
+                const response = await fetch('/api/exports');
+                const data = await response.json();
+                
+                const tbody = document.querySelector('#exports-table tbody');
+                let html = '';
+                
+                if (data.exports && data.exports.length > 0) {
+                    data.exports.forEach(exp => {
+                        const date = new Date(exp.created).toLocaleDateString('ar-EG');
+                        const sizeMB = (exp.size / (1024*1024)).toFixed(2);
+                        
+                        html += `
+                            <tr>
+                                <td>${exp.name}</td>
+                                <td>${exp.factory || 'متعدد'}</td>
+                                <td>${sizeMB} MB</td>
+                                <td>${date}</td>
+                                <td>${exp.download_count || 0}</td>
+                                <td>
+                                    <a href="${exp.download_url}" class="btn btn-success" target="_blank">
+                                        <i class="fas fa-download"></i> تنزيل
+                                    </a>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    html = '<tr><td colspan="6" style="text-align: center; color: #b0b0ff;">لا توجد ملفات مصدرة</td></tr>';
+                }
+                
+                tbody.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Error loading exports:', error);
+            }
+        }
+        
+        // تحميل المستخدمين
+        async function loadUsers() {
+            try {
+                const response = await fetch('/api/auth/stats', {
+                    headers: { 'Authorization': `Bearer ${sessionToken}` }
+                });
+                
+                const data = await response.json();
+                
+                const tbody = document.querySelector('#users-table tbody');
+                let html = '';
+                
+                if (data.success && data.users) {
+                    data.users.forEach(user => {
+                        const date = new Date(user.created_at).toLocaleDateString('ar-EG');
+                        const role = user.role === 'admin' ? 'مسؤول' : 'مستخدم';
+                        const status = user.is_active ? 'نشط' : 'غير نشط';
+                        
+                        html += `
+                            <tr>
+                                <td>${user.username}</td>
+                                <td>${user.email || '-'}</td>
+                                <td>${role}</td>
+                                <td>${date}</td>
+                                <td><span class="status-badge ${user.is_active ? 'status-ready' : 'status-warning'}">${status}</span></td>
+                                <td>
+                                    ${currentUser.role === 'admin' ? `
+                                        <button class="btn btn-warning" onclick="editUser('${user.username}')">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    ` : ''}
+                                </td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    html = '<tr><td colspan="6" style="text-align: center; color: #b0b0ff;">لا يمكن تحميل بيانات المستخدمين</td></tr>';
+                }
+
+                
+                tbody.innerHTML = html;
+                document.getElementById('users-count').textContent = data.stats?.total_users || 0;
+                
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+        
+        // إظهار/إخفاء الأقسام
+        function showSection(sectionId) {
+            // إخفاء جميع الأقسام
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // إزالة النشط من جميع الروابط
+            document.querySelectorAll('.nav-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // إظهار القسم المطلوب
+            document.getElementById(sectionId).classList.add('active');
+            
+            // تحديث الرابط النشط
+            document.querySelector(`.nav-menu a[onclick*="${sectionId}"]`).classList.add('active');
+            
+            // تحميل البيانات عند الحاجة
+            if (sectionId === 'products') loadProducts();
+            if (sectionId === 'exports') loadExports();
+            if (sectionId === 'users') loadUsers();
+        }
+        
+        // بدء تشغيل مصنع
+        async function startFactory(factoryType) {
+            try {
+                const response = await fetch('/api/factories/start', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${sessionToken}`
+                    },
+                    body: JSON.stringify({ factory_type: factoryType })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlert(`تم بدء تشغيل مصنع ${factoryType}`, 'success');
+                    updateFactories();
+                    setTimeout(updateStats, 2000); // تحديث الإحصائيات بعد 2 ثانية
+                } else {
+                    showAlert(data.message, 'error');
+                }
+            } catch (error) {
+                showAlert('حدث خطأ في بدء المصنع', 'error');
+                console.error('Start factory error:', error);
+            }
+        }
+        
+        // تصدير منتجات المصنع
+        async function exportFactory(factoryType) {
+            try {
+                const response = await fetch('/api/export', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${sessionToken}`
+                    },
+                    body: JSON.stringify({ factory_type: factoryType })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlert(`تم تصدير منتجات ${factoryType} بنجاح`, 'success');
+                    updateStats();
+                    if (document.getElementById('exports').classList.contains('active')) {
+                        loadExports();
+                    }
+                } else {
+                    showAlert(data.message, 'error');
+                }
+            } catch (error) {
+                showAlert('حدث خطأ في التصدير', 'error');
+                console.error('Export error:', error);
+            }
+        }
+        
+        // تحديث حالة المصانع
+        async function updateFactories() {
+            try {
+                const factories = ['education', 'creative', 'corporate', 'technology'];
+                
+                for (const factory of factories) {
+                    const statusElement = document.getElementById(`${factory}-status`);
+                    if (statusElement) {
+                        statusElement.textContent = 'يعمل...';
+                        statusElement.className = 'status-badge status-active';
+                    }
+                }
+                
+                // محاكاة تحديث الحالة
+                setTimeout(() => {
+                    factories.forEach(factory => {
+                        const statusElement = document.getElementById(`${factory}-status`);
+                        if (statusElement) {
+                            statusElement.textContent = 'جاهز';
+                            statusElement.className = 'status-badge status-ready';
+                        }
+                    });
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Update factories error:', error);
+            }
+        }
+        
+        // إظهار رسالة تنبيه
+        function showAlert(message, type) {
+            const alertDiv = document.getElementById('login-alert');
+            alertDiv.textContent = message;
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                alertDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        // تحديث القوائم
+        function refreshProducts() {
+            loadProducts();
+            showAlert('تم تحديث قائمة المنتجات', 'success');
+        }
+        
+        function refreshExports() {
+            loadExports();
+            showAlert('تم تحديث قائمة الملفات المصدرة', 'success');
+        }
+        
+        // تحميل المنتج
+        function downloadProduct(path) {
+            window.open(path, '_blank');
+        }
+        
+        // إضافة مستخدم جديد
+        function showAddUserModal() {
+            if (currentUser.role !== 'admin') {
+                showAlert('صلاحية غير كافية', 'error');
+                return;
+            }
+            
+            const username = prompt('اسم المستخدم:');
+            if (!username) return;
+            
+            const password = prompt('كلمة المرور:');
+            if (!password) return;
+            
+            const email = prompt('البريد الإلكتروني:');
+            const role = prompt('الدور (admin/user):', 'user');
+            
+            // هنا يمكن إضافة منطق إرسال البيانات للخادم
+            showAlert(`سيتم إضافة المستخدم ${username}`, 'success');
+        }
+        
+        // تحرير مستخدم
+        function editUser(username) {
+            alert(`تحرير المستخدم: ${username}`);
+        }
+        
+        // وظائف النظام
+        function backupDatabase() {
+            showAlert('جاري نسخ قاعدة البيانات احتياطياً...', 'success');
+            // إضافة منطق النسخ الاحتياطي هنا
+        }
+        
+        function clearExports() {
+            if (confirm('هل أنت متأكد من مسح جميع الملفات المصدرة؟')) {
+                showAlert('جاري مسح الملفات المصدرة...', 'success');
+                // إضافة منطق المسح هنا
+            }
+        }
+        
+        function clearProducts() {
+            if (confirm('هل أنت متأكد من مسح جميع المنتجات؟')) {
+                showAlert('جاري مسح جميع المنتجات...', 'success');
+                // إضافة منطق المسح هنا
+            }
+        }
+        
+        function restartSystem() {
+            if (confirm('هل أنت متأكد من إعادة تشغيل النظام؟')) {
+                showAlert('جاري إعادة تشغيل النظام...', 'success');
+                // إضافة منطق إعادة التشغيل هنا
+            }
+        }
+        
+        // تحديث البيانات كل 30 ثانية
+        setInterval(updateStats, 30000);
+    </script>
+</body>
+</html>

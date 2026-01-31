@@ -1,0 +1,27 @@
+{
+  "build": {
+    "builder": "NIXPACKS",
+    "buildCommand": "bash build_render.sh"
+  },
+  "deploy": {
+    "startCommand": "./start_unified_system.sh",
+    "healthcheckPath": "/",
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 10
+  },
+  "variables": {
+    "PORT": {
+      "description": "منفذ التشغيل",
+      "value": "8000",
+      "required": true
+    },
+    "RUST_LOG": {
+      "description": "مستوى تسجيل Rust",
+      "value": "info"
+    },
+    "PYTHONUNBUFFERED": {
+      "description": "تفعيل إخراج Python",
+      "value": "1"
+    }
+  }
+}

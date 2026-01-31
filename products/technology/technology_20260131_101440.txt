@@ -1,0 +1,28 @@
+منتج: مكتبة معالجة النصوص العربية
+المصنع: technology
+التاريخ: 20260131_101440
+
+// مكتبة معالجة النصوص العربية
+// إصدار 1.0.0
+
+pub struct ArabicTextProcessor {
+    text: String,
+}
+
+impl ArabicTextProcessor {
+    pub fn new(text: &str) -> Self {
+        ArabicTextProcessor {
+            text: text.to_string(),
+        }
+    }
+    
+    pub fn normalize(&self) -> String {
+        // تطبيع النص العربي
+        self.text.clone()
+    }
+    
+    pub fn tokenize(&self) -> Vec<String> {
+        // تقسيم النص إلى كلمات
+        self.text.split_whitespace().map(|s| s.to_string()).collect()
+    }
+}

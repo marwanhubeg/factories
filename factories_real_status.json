@@ -1,0 +1,30 @@
+[
+  {
+    "id": "factory_1",
+    "type": "education",
+    "status": "running",
+    "files": 1,
+    "exists": true
+  },
+  {
+    "id": "factory_2",
+    "type": "creative",
+    "status": "running",
+    "files": 1,
+    "exists": true
+  },
+  {
+    "id": "factory_3",
+    "type": "technology",
+    "status": "running",
+    "files": 1,
+    "exists": true
+  },
+  {
+    "id": "factory_4",
+    "type": "corporate",
+    "status": "running",
+    "files": 1,
+    "exists": true
+  }
+]

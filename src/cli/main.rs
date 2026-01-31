@@ -1,5 +1,8 @@
 use clap::Parser;
 use marwan_hub_factories::cli::{Cli, run_cli};
+use marwan_hub_factories::core::factory_manager::FactoryManager;
+use std::sync::Arc;
+use std::process;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -40,7 +43,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // تشغيل CLI
     if let Err(e) = run_cli().await {
         log::error!("فشل في التنفيذ: {}", e);
-        std::process::exit(1);
+        process::exit(1);
     }
     
     Ok(())
@@ -60,12 +63,11 @@ fn print_banner() {
     println!("║                                                          ║");
     println!("║            H U B   F A C T O R I E S   v3.0.0            ║");
     println!("║                                                          ║");
-    println!("║          نظام المصانع الذكية للتعليم والإبداع           ║");
-    println!("║                                                          ║");
     println!("╚══════════════════════════════════════════════════════════╝");
     println!();
     println!("📅 التاريخ: {}", chrono::Local::now().format("%Y-%m-%d"));
     println!("⏰ الوقت: {}", chrono::Local::now().format("%H:%M:%S"));
     println!("🚀 الإصدار: {}", env!("CARGO_PKG_VERSION"));
+    println!("🏭 إدارة المصانع الذكية للتعليم والإبداع");
     println!();
 }

@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📦 تنزيل المنتجات - Marwan Hub Factories</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --dark: #2b2d42;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin: 0;
+            background: linear-gradient(45deg, #fff, #4cc9f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+            color: var(--success);
+        }
+        
+        .stat-label {
+            color: #aaa;
+            font-size: 1rem;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .product-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(67, 97, 238, 0.3);
+        }
+        
+        .product-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .product-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(67, 97, 238, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+        
+        .product-info h3 {
+            margin: 0;
+            font-size: 1.3rem;
+            color: #fff;
+        }
+        
+        .product-type {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(76, 201, 240, 0.2);
+            color: #4cc9f0;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .product-details {
+            margin: 20px 0;
+            color: #ddd;
+            font-size: 0.95rem;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .detail-label {
+            color: #aaa;
+        }
+        
+        .detail-value {
+            color: #fff;
+            font-weight: 500;
+        }
+        
+        .download-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+        
+        .download-btn:hover {
+            background: var(--secondary);
+            transform: scale(1.05);
+        }
+        
+        .batch-download {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .batch-download h2 {
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        
+        .factory-selector {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .factory-btn {
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--primary);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .factory-btn:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .log {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 40px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        
+        .log-entry {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .success {
+            background: rgba(76, 201, 240, 0.3);
+            border: 2px solid #4cc9f0;
+        }
+        
+        .error {
+            background: rgba(244, 67, 54, 0.3);
+            border: 2px solid #f44336;
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            h1 { font-size: 2rem; }
+            .products-grid { grid-template-columns: 1fr; }
+            .factory-selector { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📦 مركز تنزيل المنتجات</h1>
+            <p class="subtitle">Marwan Hub Factories - جميع منتجاتك في مكان واحد</p>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <span class="stat-number" id="totalProducts">0</span>
+                    <span class="stat-label">إجمالي المنتجات</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="totalSize">0</span>
+                    <span class="stat-label">إجمالي الحجم</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="lastUpdate">-</span>
+                    <span class="stat-label">آخر تحديث</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">4</span>
+                    <span class="stat-label">أنواع المصانع</span>
+                </div>
+            </div>
+        </header>
+        
+        <!-- رسالة الترحيب -->
+        <div class="message success" id="welcomeMessage">
+            ✅ نظام التنزيل يعمل! يمكنك الآن تنزيل المنتجات المتاحة
+        </div>
+        
+        <!-- تنزيل الدُفعات -->
+        <div class="batch-download">
+            <h2>📦 تنزيل دفعة كاملة</h2>
+            <p>يمكنك تنزيل جميع منتجات مصنع معين في ملف ZIP واحد</p>
+            
+            <div class="factory-selector">
+                <button class="factory-btn" onclick="downloadBatch('education')">
+                    🎓 منتجات التعليم
+                </button>
+                <button class="factory-btn" onclick="downloadBatch('creative')">
+                    🎨 منتجات الإبداع
+                </button>
+                <button class="factory-btn" onclick="downloadBatch('technology')">
+                    💻 منتجات التقنية
+                </button>
+                <button class="factory-btn" onclick="downloadBatch('corporate')">
+                    📊 منتجات الأعمال
+                </button>
+                <button class="factory-btn" onclick="downloadBatch('all')" style="background: var(--success);">
+                    📦 جميع المنتجات
+                </button>
+            </div>
+            
+            <p style="margin-top: 20px; font-size: 0.9rem; color: #aaa;">
+                ⚡ سيبدأ التنزيل تلقائياً عند النقر على الزر
+            </p>
+        </div>
+        
+        <!-- قائمة المنتجات -->
+        <h2 style="color: white; margin: 40px 0 20px;">📋 المنتجات المتاحة للتنزيل</h2>
+        <div class="products-grid" id="productsGrid">
+            <!-- سيتم ملؤها بالجافاسكريبت -->
+        </div>
+        
+        <!-- سجل التنزيلات -->
+        <div class="log" id="downloadLog">
+            <div class="log-entry">[00:00:00] ✅ جاري تحميل قائمة المنتجات...</div>
+        </div>
+    </div>
+    
+    <script>
+        // تحديد منفذ الخادم
+        const SERVER_PORT = 9000;
+        const API_BASE = `http://localhost:${SERVER_PORT}`;
+        
+        // سجل التنزيلات
+        function log(message, type = 'info') {
+            const now = new Date();
+            const time = `[${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}]`;
+            const logEl = document.getElementById('downloadLog');
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            logEntry.textContent = `${time} ${message}`;
+            logEl.prepend(logEntry);
+            logEl.scrollTop = 0;
+            
+            // عرض رسالة للمستخدم
+            if (type === 'success') {
+                showMessage(message, 'success');
+            } else if (type === 'error') {
+                showMessage(message, 'error');
+            }
+        }
+        
+        // عرض رسالة للمستخدم
+        function showMessage(text, type = 'info') {
+            const messageEl = document.getElementById('welcomeMessage');
+            if (messageEl) {
+                messageEl.textContent = text;
+                messageEl.className = `message ${type}`;
+                messageEl.style.display = 'block';
+                
+                // إخفاء الرسالة بعد 5 ثواني
+                setTimeout(() => {
+                    messageEl.style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        // تحميل المنتجات
+        async function loadProducts() {
+            try {
+                log('🔄 جاري تحميل قائمة المنتجات...');
+                
+                const response = await fetch(`${API_BASE}/api/export/products`);
+                if (!response.ok) throw new Error(`فشل تحميل المنتجات: ${response.status}`);
+                
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.message || 'فشل تحميل المنتجات');
+                }
+                
+                log(`✅ تم تحميل ${data.count} منتج`, 'success');
+                
+                // تحديث الإحصائيات
+                document.getElementById('totalProducts').textContent = data.count;
+                document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString('ar-EG');
+                
+                // حساب إجمالي الحجم
+                const totalSize = data.products.reduce((sum, product) => sum + product.size, 0);
+                document.getElementById('totalSize').textContent = formatFileSize(totalSize);
+                
+                // عرض المنتجات
+                renderProducts(data.products);
+                
+            } catch (error) {
+                log(`❌ خطأ: ${error.message}`, 'error');
+                // عرض بيانات تجريبية
+                showDemoProducts();
+            }
+        }
+        
+        // عرض المنتجات
+        function renderProducts(products) {
+            const grid = document.getElementById('productsGrid');
+            
+            if (!products || products.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #aaa;">
+                        <div style="font-size: 3rem; margin-bottom: 20px;">📭</div>
+                        <h3>لا توجد منتجات متاحة حاليًا</h3>
+                        <p>يمكنك إنشاء منتجات جديدة من خلال نظام المصانع</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = '';
+            
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                
+                const icon = getFactoryIcon(product.type);
+                const size = formatFileSize(product.size);
+                const createdDate = new Date(product.created).toLocaleDateString('ar-EG');
+                
+                card.innerHTML = `
+                    <div class="product-header">
+                        <div class="product-icon">${icon}</div>
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <span class="product-type">${getFactoryName(product.type)}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="product-details">
+                        <div class="detail-item">
+                            <span class="detail-label">الحجم:</span>
+                            <span class="detail-value">${size}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">تم الإنشاء:</span>
+                            <span class="detail-value">${createdDate}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">المعرف:</span>
+                            <span class="detail-value">${product.id.substring(0, 20)}...</span>
+                        </div>
+                    </div>
+                    
+                    <button class="download-btn" onclick="downloadProduct('${product.id}')">
+                        ⬇️ تنزيل المنتج
+                    </button>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+        
+        // تنزيل منتج فردي
+        function downloadProduct(productId) {
+            log(`⬇️ بدء تنزيل المنتج: ${productId}`);
+            
+            // إنشاء رابط تنزيل
+            const downloadUrl = `${API_BASE}/download/${productId}`;
+            
+            // إنشاء عنصر a للتنزيل
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            log(`✅ بدأ تنزيل المنتج: ${productId}`, 'success');
+        }
+        
+        // تنزيل دفعة
+        function downloadBatch(factoryType) {
+            log(`📦 بدء تنزيل دفعة ${factoryType}...`);
+            
+            // إنشاء رابط تنزيل الدفعة
+            const downloadUrl = `${API_BASE}/api/export/batch/${factoryType}`;
+            
+            // إنشاء عنصر a للتنزيل
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            log(`✅ بدأ تنزيل دفعة ${factoryType}`, 'success');
+        }
+        
+        // دوال مساعدة
+        function getFactoryIcon(type) {
+            const icons = {
+                'education': '🎓',
+                'creative': '🎨',
+                'technology': '💻',
+                'corporate': '📊'
+            };
+            return icons[type] || '📦';
+        }
+        
+        function getFactoryName(type) {
+            const names = {
+                'education': 'مصنع التعليم',
+                'creative': 'مصنع الإبداع',
+                'technology': 'مصنع التقنية',
+                'corporate': 'مصنع الأعمال'
+            };
+            return names[type] || type;
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 بايت';
+            const k = 1024;
+            const sizes = ['بايت', 'كيلوبايت', 'ميجابايت', 'جيجابايت'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        // بيانات تجريبية للعرض
+        function showDemoProducts() {
+            const demoProducts = [
+                {
+                    id: 'education_course_ai_20260131',
+                    name: 'دورة الذكاء الاصطناعي.md',
+                    type: 'education',
+                    size: 2457,
+                    created: '2026-01-31T12:00:00',
+                    download_url: '/download/education_course_ai_20260131'
+                },
+                {
+                    id: 'creative_design_logo_20260131',
+                    name: 'تصميم شعار تكنولوجي.json',
+                    type: 'creative',
+                    size: 1536,
+                    created: '2026-01-31T12:30:00',
+                    download_url: '/download/creative_design_logo_20260131'
+                }
+            ];
+            
+            document.getElementById('totalProducts').textContent = demoProducts.length;
+            document.getElementById('totalSize').textContent = formatFileSize(
+                demoProducts.reduce((s, p) => s + p.size, 0)
+            );
+            
+            renderProducts(demoProducts);
+            log('⚠️ عرض بيانات تجريبية (الاتصال بالخادم فشل)', 'error');
+        }
+        
+        // التهيئة
+        document.addEventListener('DOMContentLoaded', () => {
+            log('🚀 بدء تحميل مركز التنزيل...');
+            loadProducts();
+            
+            // تحديث تلقائي كل 30 ثانية
+            setInterval(loadProducts, 30000);
+            
+            // اختبار اتصال الخادم
+            fetch(`${API_BASE}/api/health`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'ok') {
+                        log(`✅ اتصال الخادم نشط - ${data.products_count} منتج متاح`, 'success');
+                    }
+                })
+                .catch(err => {
+                    log(`❌ لا يمكن الوصول للخادم: ${err.message}`, 'error');
+                });
+        });
+    </script>
+</body>
+</html>
